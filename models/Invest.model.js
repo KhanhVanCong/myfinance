@@ -2,7 +2,7 @@ const Sequelize = require('sequelize');
 
 const sequelize = require('../util/database');
 
-const Financial = sequelize.define('financial', {
+const InvestModel = sequelize.define('invest', {
   id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
@@ -14,18 +14,23 @@ const Financial = sequelize.define('financial', {
     allowNull: false
   },
   money: {
-    type: Sequelize.DECIMAL(20, 2),
+    type: Sequelize.DECIMAL,
     allowNull: false
   },
   date: {
     type: Sequelize.DATEONLY,
     allowNull: false
   },
-  source: {
+  location: {
     type: Sequelize.STRING,
     allowNull: false
-  }
-
+  },
+  profit: {
+    type: Sequelize.STRING,
+  },
+  term: {
+    type: Sequelize.DATEONLY,
+  },
 });
 
-module.exports = Financial;
+module.exports = InvestModel;

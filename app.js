@@ -40,7 +40,7 @@ app.use(sessionMiddleWare);
 // Route
 const authRoutes = require("./routes/auth.route");
 const homeRoutes = require("./routes/home.route");
-const financialRoutes = require("./routes/financial.route");
+const financialRoutes = require("./routes/finance.route");
 app.use(authRoutes);
 app.use(homeRoutes);
 app.use(financialRoutes);

@@ -2,17 +2,25 @@ const Sequelize = require('sequelize');
 
 const sequelize = require('../util/database');
 
-const CategoryInvest = sequelize.define('category_invest', {
+const UserModel = sequelize.define('user', {
   id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
     allowNull: false,
     primaryKey: true
   },
-  desc: {
+  name: {
+    type: Sequelize.STRING,
+    allowNull: false
+  },
+  email: {
+    type: Sequelize.STRING,
+    allowNull: false
+  },
+  password: {
     type: Sequelize.STRING,
     allowNull: false
   }
 });
 
-module.exports = CategoryInvest;
+module.exports = UserModel;

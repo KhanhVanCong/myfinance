@@ -1,9 +1,9 @@
-const User = require('../models/user');
-const Financial = require('../models/financial');
-const CategoryFinancial = require('../models/category-financial');
-const PaymentMethod = require('../models/payment-method');
-const Invest = require('../models/Invest');
-const CategoryInvest = require('../models/category-invest');
+const User = require('../models/user.model');
+const Financial = require('../models/financial.model');
+const CategoryFinancial = require('../models/category-financial.model');
+const PaymentMethod = require('../models/payment-method.model');
+const Invest = require('../models/Invest.model');
+const CategoryInvest = require('../models/category-invest.model');
 
 Financial.belongsTo(User);
 User.hasMany(Financial);

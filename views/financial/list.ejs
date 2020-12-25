@@ -150,7 +150,7 @@
                        name="source"
                        id="source"
                        class="form-control"
-                       placeholder="Please enter source" required>
+                       placeholder="Please enter source">
               </div>
             </div>
             <div class="col-md-6">
@@ -417,9 +417,7 @@
           headers: {
             'csrf-token': dataForm._csrf
           },
-          data: JSON.stringify({
-            data: dataForm
-          }),
+          data: JSON.stringify( dataForm ),
           success: function (res) {
             new PNotify.alert({
               title: 'Success !!!',
@@ -449,9 +447,7 @@
           headers: {
             'csrf-token': dataForm._csrf
           },
-          data: JSON.stringify({
-            data: dataForm
-          }),
+          data: JSON.stringify( dataForm ),
           success: function (res) {
             new PNotify.alert({
               title: 'Success !!!',

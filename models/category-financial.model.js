@@ -2,7 +2,7 @@ const Sequelize = require('sequelize');
 
 const sequelize = require('../util/database');
 
-const CategoryFinancial = sequelize.define('category_financial', {
+const CategoryFinancialModel = sequelize.define('category_financial', {
   id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
@@ -15,4 +15,4 @@ const CategoryFinancial = sequelize.define('category_financial', {
   }
 });
 
-module.exports = CategoryFinancial;
+module.exports = CategoryFinancialModel;

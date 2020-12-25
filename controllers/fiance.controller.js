@@ -1,6 +1,8 @@
-const Category = require('../models/category-financial');
-const PaymentMethod = require('../models/payment-method');
-const Financial = require('../models/financial');
+const { validationResult } = require('express-validator/check');
+
+const Category = require('../models/category-financial.model');
+const PaymentMethod = require('../models/payment-method.model');
+const Financial = require('../models/financial.model');
 
 exports.getListFinancial = async (req, res, next) => {
   try {
@@ -44,7 +46,11 @@ exports.getFinancial = async (req, res, next) => {
 
 exports.postFinancial = async (req, res, next) => {
   try {
-    const { desc, money, source, date, categoryFinancialId, paymentMethodId } = req.body.data;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      throw new Error(errors.array()[0].msg);
+    }
+    const { desc, money, source, date, categoryFinancialId, paymentMethodId } = req.body;
     const financial = await req.user.createFinancial({
       desc,
       money,
@@ -77,7 +83,11 @@ exports.postFinancial = async (req, res, next) => {
 
 exports.putFinancial = async (req, res, next) => {
   try {
-    const { id, desc, money, source, date, categoryFinancialId, paymentMethodId } = req.body.data;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      throw new Error(errors.array()[0].msg);
+    }
+    const { id, desc, money, source, date, categoryFinancialId, paymentMethodId } = req.body;
     const financial = await Financial.findByPk(id);
     financial.desc = desc;
     financial.money = money;
