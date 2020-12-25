@@ -1,0 +1,561 @@
+<%- include('../includes/head.ejs') %>
+<link rel="stylesheet" href="/css/validate.css">
+<link rel="stylesheet" href="/css/plugins/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="/css/plugins/responsive.bootstrap4.min.css">
+<link rel="stylesheet" href="/css/plugins/PNotifyBrightTheme.css">
+<link rel="stylesheet" href="/css/plugins/select2.min.css">
+<link rel="stylesheet" href="/css/plugins/daterangepicker.css">
+</head>
+
+<body>
+<%- include('../includes/navigation.ejs') %>
+<div class="pcoded-main-container">
+  <div class="pcoded-content">
+    <!-- [ breadcrumb ] start -->
+    <div class="page-header">
+
+      <div class="page-block">
+        <div class="row align-items-center">
+          <div class="col-md-12">
+            <div class="page-header-title">
+              <h5 class="m-b-10">Financial</h5>
+            </div>
+            <ul class="breadcrumb">
+              <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+              <li class="breadcrumb-item"><a href="#">Financial</a></li>
+              <li class="breadcrumb-item"><a href="/financial">Income/Expense/Dept</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- [ breadcrumb ] end -->
+    <!-- [ Main Content ] start -->
+    <div class="row">
+      <!-- HTML5 Export Buttons table start -->
+      <div class="col-sm-12">
+        <div class="card">
+          <div class="card-header">
+            <div class="row">
+              <div class="col-sm-3">
+                <h5>List Income/Expense/Dept</h5>
+              </div>
+              <div class="col-sm-9 text-right">
+                <button id="create-financial"
+                        class="btn btn-success btn-sm btn-round has-ripple text-white">
+                  <i class="feather icon-plus"></i> New
+                </button>
+              </div>
+            </div>
+
+          </div>
+          <div class="card-body">
+            <div class="dt-responsive table-responsive">
+              <table id="single-select" class="table table-hover table-striped table-bordered nowrap w-100">
+                <thead>
+                <tr>
+                  <th>STT</th>
+                  <th>Desc</th>
+                  <th>Money (VND)</th>
+                  <th>Date</th>
+                  <th>Source</th>
+                  <th>Category</th>
+                  <th>Payment</th>
+                  <th>UpdateAt</th>
+                  <th>Handle</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                <% for ( let financial of lstFinancial ) { %>
+                  <tr>
+                    <td></td>
+                    <td><%= financial.desc %></td>
+                    <td><%= new Intl.NumberFormat().format(financial.money) %></td>
+                    <td><%= financial.date %></td>
+                    <td><%= financial.source %></td>
+                    <td><%= financial.category_financial.desc %></td>
+                    <td><%= financial.payment_method.desc %></td>
+                    <td><%= financial.updatedAt.toLocaleString('en-US') %></td>
+                    <td>
+                      <a href="#" class="btn-edit" data-id=<%= financial.id %>>
+                        <i class="icon feather icon-edit f-w-600 f-16 m-r-15 text-c-blue"></i>
+                      </a>
+                      <a href="#" class="sweet-warning" data-id=<%= financial.id %>>
+                        <i class="feather icon-trash-2 f-w-600 f-16 text-c-red"></i>
+                      </a>
+                    </td>
+                  </tr>
+                <% } %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- [ Main Content ] end -->
+  </div>
+</div>
+
+<div class="modal fade"
+     id="modal-report"
+     tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">New Financial</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="form-update" method="post" action>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="desc"><span class="text-danger">*</span> Description</label>
+                <input type="text"
+                       name="desc"
+                       id="desc"
+                       class="form-control"
+                       placeholder="Please enter Description" required>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="money"><span class="text-danger">*</span> Money (VND)</label>
+                <input type="text"
+                       name="money"
+                       id="money"
+                       class="form-control"
+                       data-type="currency"
+                       placeholder="Please enter money" required>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="date"><span class="text-danger">*</span> Date</label>
+                <input type="text"
+                       name="date"
+                       id="date"
+                       class="form-control"
+                       placeholder="Please enter date" required>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="source"><span class="text-danger">*</span> Source</label>
+                <input type="text"
+                       name="source"
+                       id="source"
+                       class="form-control"
+                       placeholder="Please enter source" required>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="category-financial"><span class="text-danger">*</span> Category Financial</label>
+                <select class="form-control" id="category-financial" name="categoryFinancialId" data-width="100%">
+                  <option value="0" selected="selected">Please choose Category</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="payment-method"><span class="text-danger">*</span> Method </label>
+                <select class="form-control" id="payment-method" name="paymentMethodId" data-width="100%">
+                  <option value="0" selected="selected">Please choose Method</option>
+                </select>
+              </div>
+            </div>
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <input type="hidden" name="id" value="">
+            <div class="col-sm-12 text-right">
+              <a href="#" class="btn btn-danger has-ripple text-white" data-dismiss="modal">Cancel</a>
+              <button class="btn btn-success" type="submit" id="btn-submit">Create</button>
+              <div class="spinner-border text-primary spinner-border text-primary spinner-border-sm mr-1"
+                   role="status"
+                   id="loading-btn"
+                   style="display: none">
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('../includes/script.ejs') %>
+<script src="/js/plugins/moment.min.js"></script>
+<script src="/js/plugins/jquery.dataTables.min.js"></script>
+<script src="/js/plugins/jquery.validate.min.js"></script>
+<script src="/js/plugins/dataTables.bootstrap4.min.js"></script>
+<script src="/js/plugins/dataTables.responsive.min.js"></script>
+<script src="/js/plugins/PNotify.js"></script>
+<script src="/js/plugins/PNotifyButtons.js"></script>
+<script src="/js/plugins/sweetalert.min.js"></script>
+<script src="http://cdn.datatables.net/plug-ins/1.10.22/sorting/datetime-moment.js"></script>
+<script src="/js/plugins/select2.full.min.js"></script>
+<script src="/js/plugins/daterangepicker.js"></script>
+<script src="/js/plugins/auto-numeric.min.js"></script>
+<script>
+  $(document)
+    .ready(function () {
+      $.fn.dataTable.moment('MM/DD/YYYY, h:mm:ss A');
+      let tableFinancial = $('#single-select')
+        .DataTable({
+          responsive: true,
+          columnDefs: [ {
+            searchable: false,
+            orderable: false,
+            targets: 0
+          }, {
+            type: 'datetime-moment',
+            target: 7
+          } ],
+          order: [ [ 7, "desc" ] ]
+        });
+
+      setIndexTable(tableFinancial);
+
+      $('#date')
+        .daterangepicker({
+          singleDatePicker: true,
+          showDropdowns: true,
+          minYear: 1990,
+          locale: {
+            format: 'YYYY/MM/DD'
+          }
+        });
+
+      $('#category-financial')
+        .select2({
+          dropdownParent: $('#modal-report'),
+          ajax: {
+            url: `/categoryfinancial`,
+            dataType: 'json',
+            delay: 1000,
+            data: function (params) {
+              return {
+                q: params.term, // search term
+              };
+            },
+            processResults: function (res) {
+              let results = [];
+              if (res.data.length > 0) {
+                res.data.forEach(function (i) {
+                  results.push({
+                    id: i.id,
+                    text: i.desc
+                  });
+                });
+              }
+              return { results: results }
+            },
+            cache: true
+          },
+        });
+
+      $('#payment-method')
+        .select2({
+          dropdownParent: $('#modal-report'),
+          ajax: {
+            url: `/paymentmethod`,
+            dataType: 'json',
+            delay: 1000,
+            data: function (params) {
+              return {
+                q: params.term, // search term
+              };
+            },
+            processResults: function (res) {
+              let results = [];
+              if (res.data.length > 0) {
+                res.data.forEach(function (i) {
+                  results.push({
+                    id: i.id,
+                    text: i.desc
+                  });
+                });
+              }
+              return { results: results }
+            },
+            cache: true
+          },
+        });
+
+      const inpMoney = new AutoNumeric('#money', { allowDecimalPadding: false });
+
+      $('#create-financial')
+        .click(function (e) {
+          e.preventDefault();
+          const form = $('#form-update');
+          resetForm(form);
+          $('#modal-report')
+            .modal();
+        })
+
+      $('#form-update')
+        .submit(async function (e) {
+          const spinLoading = $('#loading-btn');
+          try {
+            e.preventDefault();
+            const form = $(this);
+            spinLoading.css('display', 'inline-block');
+            if (form.valid()) {
+              const valuesArray = form.serializeArray();
+              let dataFormObj = {};
+              valuesArray.forEach(val => {
+                const { name, value } = val;
+                dataFormObj[name] = value;
+              });
+              dataFormObj.money = inpMoney.getNumericString();
+              if (dataFormObj.categoryFinancialId == 0) {
+                throw new Error('Please choose Category Financial');
+              }
+              if (dataFormObj.paymentMethodId == 0) {
+                throw new Error('Please choose Payment Method');
+              }
+              // Create New
+              if (!dataFormObj.id) {
+                const result = await saveFinancial(dataFormObj);
+                const objFinancial = result.data;
+                if (objFinancial) {
+                  resetForm(form);
+                  const arrFinancial = Object.values(objFinancial);
+                  arrFinancial[0] = '';
+                  arrFinancial[2] = new Intl.NumberFormat().format(arrFinancial[2]);
+                  arrFinancial.push(`<a href="#">
+                          <i class="icon feather icon-edit f-w-600 f-16 m-r-15 text-c-blue"></i>
+                        </a>
+                        <a href="#" class="sweet-warning" data-id=${ objFinancial.id }>
+                          <i class="feather icon-trash-2 f-w-600 f-16 text-c-red"></i>
+                        </a>`);
+                  await addRow(arrFinancial);
+                }
+              } else {
+                await updateFinancial(dataFormObj);
+                history.go();
+              }
+
+            } else {
+              throw new Error('Please fill full input (*)');
+            }
+          } catch (e) {
+            swal("Error!", e.message, 'error');
+            spinLoading.css('display', 'none');
+          }
+
+        });
+
+      $('a.btn-edit')
+        .click(async function (e) {
+          e.preventDefault();
+          const modal = $('#modal-report');
+          const id = $(this)
+            .data('id');
+          const result = await getFinancial(id);
+          const financial = result.data;
+          if (financial) {
+            const { id, desc, money, source, date, category_financial, payment_method } = financial;
+            modal.find('[name=id]')
+              .val(id);
+            modal.find('[name=desc]')
+              .val(desc);
+            inpMoney.set(money);
+            modal.find('[name=date]')
+              .val(date);
+            modal.find('[name=source]')
+              .val(source);
+            const categoryId = category_financial.id;
+            const categoryOption = new Option(category_financial.desc, categoryId, false, false);
+            $('#category-financial')
+              .append(categoryOption)
+              .val(categoryId)
+              .trigger('change');
+            const methodId = payment_method.id;
+            const methodOption = new Option(payment_method.desc, methodId, false, false);
+            $('#payment-method')
+              .append(methodOption)
+              .val(methodId)
+              .trigger('change');
+            $('#btn-submit')
+              .text('Update');
+            modal.modal('show');
+          }
+
+        })
+
+      $(document)
+        .delegate('.sweet-warning', 'click', async function (e) {
+          e.preventDefault();
+          const id = e.currentTarget.getAttribute('data-id');
+          const willDelete = await swal({
+            title: "Do you want to delete ?",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+          });
+          if (willDelete) {
+            const result = await deleteFinancial(id);
+            if (result) {
+              tableFinancial.row($(this)
+                .parents('tr'))
+                .remove()
+                .draw(false);
+            }
+          }
+        });
+
+      function saveFinancial(dataForm) {
+        return $.ajax({
+          url: `/financial`,
+          method: 'POST',
+          contentType: 'application/json',
+          headers: {
+            'csrf-token': dataForm._csrf
+          },
+          data: JSON.stringify({
+            data: dataForm
+          }),
+          success: function (res) {
+            new PNotify.alert({
+              title: 'Success !!!',
+              text: `${ res.message }`,
+              type: 'success'
+            });
+          },
+          error: function (e) {
+            new PNotify.alert({
+              title: 'Failed !!!',
+              text: `${ e.responseJSON.message }`,
+              type: 'error'
+            });
+          },
+          complete: function (e) {
+            $('#loading-btn')
+              .css('display', 'none');
+          }
+        });
+      }
+
+      function updateFinancial(dataForm) {
+        return $.ajax({
+          url: `/financial`,
+          method: 'PUT',
+          contentType: 'application/json',
+          headers: {
+            'csrf-token': dataForm._csrf
+          },
+          data: JSON.stringify({
+            data: dataForm
+          }),
+          success: function (res) {
+            new PNotify.alert({
+              title: 'Success !!!',
+              text: `${ res.message }`,
+              type: 'success'
+            });
+          },
+          error: function (e) {
+            new PNotify.alert({
+              title: 'Failed !!!',
+              text: `${ e.responseJSON.message }`,
+              type: 'error'
+            });
+          },
+          complete: function (e) {
+            $('#loading-btn')
+              .css('display', 'none');
+          }
+        });
+      }
+
+      function deleteFinancial(id) {
+        const _csrf = $('input[name="_csrf"]')[0].value;
+        return $.ajax({
+          url: `/financial/delete`,
+          method: 'DELETE',
+          contentType: 'application/json',
+          headers: {
+            'csrf-token': _csrf
+          },
+          data: JSON.stringify({
+            id
+          }),
+          success: function (res) {
+            new PNotify.alert({
+              title: 'Success !!!',
+              text: `${ res.message }`,
+              type: 'success'
+            });
+          },
+          error: function (e) {
+            new PNotify.alert({
+              title: 'Failed !!!',
+              text: `${ e.responseJSON.message }`,
+              type: 'error'
+            });
+          },
+          complete: function (e) {
+            $('#loading-btn')
+              .css('display', 'none');
+          }
+        });
+      }
+
+      function getFinancial(id) {
+        return $.ajax({
+          url: `/financial/${ id }`,
+          method: 'GET',
+          error: function (e) {
+            console.log(e);
+            new PNotify.alert({
+              title: 'Failed !!!',
+              text: `${ e.responseJSON.message }`,
+              type: 'error'
+            });
+          }
+        });
+      }
+
+      function addRow(data) {
+        return tableFinancial.row
+          .add(data)
+          .draw(false);
+      }
+
+      function setIndexTable(table) {
+        table.on('order.dt search.dt', function () {
+          table.column(0, { search: 'applied', order: 'applied' })
+            .nodes()
+            .each(function (cell, i) {
+              cell.innerHTML = i + 1;
+            });
+        })
+          .draw();
+      }
+
+      function resetForm(form) {
+        form[0].reset();
+        const dateNow = moment()
+          .format('YYYY/MM/DD');
+        $('#date')
+          .val(dateNow);
+        $('#category-financial')
+          .val(0)
+          .trigger('change');
+        $('#payment-method')
+          .val(0)
+          .trigger('change');
+        form.find('[name=id]')
+          .val('');
+        $('#btn-submit')
+          .text('Create');
+      }
+
+    });
+</script>
+<%- include('../includes/end.ejs') %>
