@@ -5,6 +5,11 @@
 <link rel="stylesheet" href="/css/plugins/PNotifyBrightTheme.css">
 <link rel="stylesheet" href="/css/plugins/select2.min.css">
 <link rel="stylesheet" href="/css/plugins/daterangepicker.css">
+<style>
+  .table td, .table th {
+    white-space: normal;
+  }
+</style>
 </head>
 
 <body>
@@ -18,12 +23,11 @@
         <div class="row align-items-center">
           <div class="col-md-12">
             <div class="page-header-title">
-              <h5 class="m-b-10">Finance</h5>
+              <h5 class="m-b-10">Invest</h5>
             </div>
             <ul class="breadcrumb">
               <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
-              <li class="breadcrumb-item"><a href="#">Finance</a></li>
-              <li class="breadcrumb-item"><a href="/financial">Income/Expense/Dept</a></li>
+              <li class="breadcrumb-item"><a href="/invest">Invest</a></li>
             </ul>
           </div>
         </div>
@@ -38,10 +42,10 @@
           <div class="card-header">
             <div class="row">
               <div class="col-sm-3">
-                <h5>List Income/Expense/Dept</h5>
+                <h5>List Invest</h5>
               </div>
               <div class="col-sm-9 text-right">
-                <button id="create-financial"
+                <button id="create-invest"
                         class="btn btn-success btn-sm btn-round has-ripple text-white">
                   <i class="feather icon-plus"></i> New
                 </button>
@@ -51,37 +55,44 @@
           </div>
           <div class="card-body">
             <div class="dt-responsive table-responsive">
-              <table id="single-select"
-                     class="table table-hover table-striped table-bordered nowrap w-100">
+              <table id="single-select" class="table table-hover table-striped table-bordered w-100">
                 <thead>
                 <tr>
                   <th>STT</th>
                   <th>Desc</th>
                   <th>Money (VND)</th>
                   <th>Date</th>
-                  <th>Source</th>
-                  <th>Category</th>
+                  <th>Invest In</th>
+                  <th>Category Invest</th>
+                  <th>Category Term</th>
+                  <th>Date Term</th>
                   <th>Payment</th>
-                  <th>UpdateAt</th>
+                  <th>Updated At</th>
                   <th>Handle</th>
                 </tr>
                 </thead>
                 <tbody>
-                <% for ( let financial of lstFinancial ) { %>
+                <% for ( let invest of lstInvest ) { %>
                   <tr>
                     <td></td>
-                    <td><%= financial.desc %></td>
-                    <td><%= new Intl.NumberFormat().format(financial.money) %></td>
-                    <td><%= financial.date %></td>
-                    <td><%= financial.source %></td>
-                    <td><%= financial.category_financial.desc %></td>
-                    <td><%= financial.payment_method.desc %></td>
-                    <td><%= financial.updatedAt.toLocaleString('en-US') %></td>
+                    <td><%= invest.desc %></td>
                     <td>
-                      <a href="#" class="btn-edit" data-id=<%= financial.id %>>
+                      Amount: <%= new Intl.NumberFormat().format(invest.money) %>
+                      <br>
+                      Profit: <%= invest.profit %>
+                    </td>
+                    <td><%= invest.date %></td>
+                    <td><%= invest.investIn %></td>
+                    <td><%= invest.category_invest.desc %></td>
+                    <td><%= invest.category_term.desc %></td>
+                    <td><%= invest.dateTerm %></td>
+                    <td><%= invest.payment_method.desc %></td>
+                    <td><%= invest.updatedAt.toLocaleString('en-US') %></td>
+                    <td>
+                      <a href="#" class="btn-edit" data-id=<%= invest.id %>>
                         <i class="icon feather icon-edit f-w-600 f-16 m-r-15 text-c-blue"></i>
                       </a>
-                      <a href="#" class="sweet-warning" data-id=<%= financial.id %>>
+                      <a href="#" class="sweet-warning" data-id=<%= invest.id %>>
                         <i class="feather icon-trash-2 f-w-600 f-16 text-c-red"></i>
                       </a>
                     </td>
@@ -112,16 +123,29 @@
       <div class="modal-body">
         <form id="form-update" method="post" action>
           <div class="row">
+
             <div class="col-md-6">
               <div class="form-group">
-                <label for="desc"><span class="text-danger">*</span> Description</label>
+                <label for="source"><span class="text-danger">*</span> Invest In</label>
                 <input type="text"
-                       name="desc"
-                       id="desc"
+                       name="investIn"
+                       id="investIn"
                        class="form-control"
-                       placeholder="Please enter Description" required>
+                       placeholder="Please enter Invest In">
               </div>
             </div>
+
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="date"><span class="text-danger">*</span> Date</label>
+                <input type="text"
+                       name="date"
+                       id="date"
+                       class="form-control datePicker"
+                       placeholder="Please enter date" required>
+              </div>
+            </div>
+
             <div class="col-md-6">
               <div class="form-group">
                 <label for="money"><span class="text-danger">*</span> Money (VND)</label>
@@ -133,36 +157,40 @@
                        placeholder="Please enter money" required>
               </div>
             </div>
+
             <div class="col-md-6">
               <div class="form-group">
-                <label for="date"><span class="text-danger">*</span> Date</label>
+                <label for="source"><span class="text-danger">*</span> Profit</label>
                 <input type="text"
-                       name="date"
-                       id="date"
+                       name="profit"
+                       id="profit"
                        class="form-control"
-                       placeholder="Please enter date" required>
+                       placeholder="Please enter profit">
               </div>
             </div>
-            <div class="col-md-6">
+
+            <div class="col-md-12">
               <div class="form-group">
-                <label for="source"><span class="text-danger">*</span> Source</label>
+                <label for="desc"><span class="text-danger">*</span> Description</label>
                 <input type="text"
-                       name="source"
-                       id="source"
+                       name="desc"
+                       id="desc"
                        class="form-control"
-                       placeholder="Please enter source">
+                       placeholder="Please enter Description" required>
               </div>
             </div>
+
             <div class="col-md-6">
               <div class="form-group">
-                <label for="category-financial"><span class="text-danger">*</span> Category
-                  Financial</label>
-                <select class="form-control" id="category-financial" name="categoryFinancialId"
+                <label for="category-invest"><span class="text-danger">*</span> Category
+                  Invest</label>
+                <select class="form-control" id="category-invest" name="categoryInvestId"
                         data-width="100%">
-                  <option value="0" selected="selected">Please choose Category</option>
+                  <option value="0" selected="selected">Please choose Invest</option>
                 </select>
               </div>
             </div>
+
             <div class="col-md-6">
               <div class="form-group">
                 <label for="payment-method"><span class="text-danger">*</span> Method </label>
@@ -172,6 +200,28 @@
                 </select>
               </div>
             </div>
+
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="category-term" class="mb-3"><span class="text-danger">*</span> Category Term</label>
+                <select class="form-control" id="category-term" name="categoryTermId" data-width="100%">
+                  <option value="0" selected="selected">Please choose Term</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="dateTerm"><span class="text-danger">*</span> Date Term</label>
+                <input type="text"
+                       name="dateTerm"
+                       id="dateTerm"
+                       class="form-control datePicker"
+                       placeholder="Please enter Date Term" required>
+              </div>
+            </div>
+
+
             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             <input type="hidden" name="id" value="">
             <div class="col-sm-12 text-right">
@@ -215,14 +265,14 @@
           targets: 0
         }, {
           type: 'datetime-moment',
-          target: 7
+          target: 9
         } ],
-        order: [ [ 7, "desc" ] ]
+        order: [ [ 9, "desc" ] ]
       });
 
     setIndexTable(tableFinancial);
 
-    $('#date').daterangepicker({
+    $('.datePicker').daterangepicker({
       singleDatePicker: true,
       showDropdowns: true,
       minYear: 1990,
@@ -231,10 +281,39 @@
       }
     });
 
-    $('#category-financial').select2({
+    $('#dateTerm').data('daterangepicker').drops = 'up';
+
+    $('#category-invest').select2({
       dropdownParent: $('#modal-report'),
       ajax: {
-        url: `/categoryfinancial`,
+        url: `/categoryinvest`,
+        dataType: 'json',
+        delay: 1000,
+        data: function (params) {
+          return {
+            q: params.term, // search term
+          };
+        },
+        processResults: function (res) {
+          let results = [];
+          if (res.data.length > 0) {
+            res.data.forEach(function (i) {
+              results.push({
+                id: i.id,
+                text: i.desc
+              });
+            });
+          }
+          return { results: results }
+        },
+        cache: true
+      },
+    });
+
+    $('#category-term').select2({
+      dropdownParent: $('#modal-report'),
+      ajax: {
+        url: `/categoryterm`,
         dataType: 'json',
         delay: 1000,
         data: function (params) {
@@ -287,7 +366,7 @@
 
     const inpMoney = new AutoNumeric('#money', { allowDecimalPadding: false });
 
-    $('#create-financial').click(function (e) {
+    $('#create-invest').click(function (e) {
       e.preventDefault();
       const form = $('#form-update');
       resetForm(form);
@@ -309,31 +388,39 @@
             dataFormObj[name] = value;
           });
           dataFormObj.money = inpMoney.getNumericString();
-          if (dataFormObj.categoryFinancialId == 0) {
-            throw new Error('Please choose Category Financial');
+          if (dataFormObj.categoryInvestId == 0) {
+            throw new Error('Please choose Category Invest');
+          }
+          if (dataFormObj.categoryTermId == 0) {
+            throw new Error('Please choose Category Term');
           }
           if (dataFormObj.paymentMethodId == 0) {
             throw new Error('Please choose Payment Method');
           }
           // Create New
           if (!dataFormObj.id) {
-            const result = await saveFinancial(dataFormObj);
-            const objFinancial = result.data;
-            if (objFinancial) {
+            const result = await saveInvest(dataFormObj);
+            const objInvest = result.data;
+            if (objInvest) {
               resetForm(form);
-              const arrFinancial = Object.values(objFinancial);
-              arrFinancial[0] = '';
-              arrFinancial[2] = new Intl.NumberFormat().format(arrFinancial[2]);
-              arrFinancial.push(`<a href="#">
+              const formatMoney = new Intl.NumberFormat().format(objInvest.money);
+              let objShowColumn = {
+                ...objInvest,
+                money: `Amount: ${ formatMoney } </br> Profit: ${ objInvest.profit }`
+              };
+              delete objShowColumn.profit;
+              const arrInvest = Object.values(objShowColumn);
+              arrInvest[0] = '';
+              arrInvest.push(`<a href="#">
                           <i class="icon feather icon-edit f-w-600 f-16 m-r-15 text-c-blue"></i>
                         </a>
-                        <a href="#" class="sweet-warning" data-id=${ objFinancial.id }>
+                        <a href="#" class="sweet-warning" data-id=${ objShowColumn.id }>
                           <i class="feather icon-trash-2 f-w-600 f-16 text-c-red"></i>
                         </a>`);
-              await addRow(arrFinancial);
+              await addRow(arrInvest);
             }
           } else {
-            await updateFinancial(dataFormObj);
+            await updateInvest(dataFormObj);
             history.go();
           }
 
@@ -352,22 +439,37 @@
       const modal = $('#modal-report');
       const id = $(this)
         .data('id');
-      const result = await getFinancial(id);
-      const financial = result.data;
-      if (financial) {
-        const { id, desc, money, source, date, category_financial, payment_method } = financial;
+      const result = await getInvest(id);
+      const invest = result.data;
+      if (invest) {
+        const {
+                id,
+                desc,
+                investIn,
+                money,
+                profit,
+                date,
+                category_invest,
+                payment_method,
+                category_term,
+                dateTerm
+              } = invest;
         modal.find('[name=id]')
              .val(id);
         modal.find('[name=desc]')
              .val(desc);
+        modal.find('[name=investIn]')
+             .val(investIn);
+        modal.find('[name=profit]')
+             .val(profit);
         inpMoney.set(money);
         modal.find('[name=date]')
              .val(date);
-        modal.find('[name=source]')
-             .val(source);
-        const categoryId = category_financial.id;
-        const categoryOption = new Option(category_financial.desc, categoryId, false, false);
-        $('#category-financial')
+        modal.find('[name=dateTerm]')
+             .val(dateTerm);
+        const categoryId = category_invest.id;
+        const categoryOption = new Option(category_invest.desc, categoryId, false, false);
+        $('#category-invest')
           .append(categoryOption)
           .val(categoryId)
           .trigger('change');
@@ -376,6 +478,12 @@
         $('#payment-method')
           .append(methodOption)
           .val(methodId)
+          .trigger('change');
+        const termId = category_term.id;
+        const termOption = new Option(category_term.desc, termId, false, false);
+        $('#category-term')
+          .append(termOption)
+          .val(termId)
           .trigger('change');
         $('#btn-submit')
           .text('Update');
@@ -394,7 +502,7 @@
         dangerMode: true,
       });
       if (willDelete) {
-        const result = await deleteFinancial(id);
+        const result = await deleteInvest(id);
         if (result) {
           tableFinancial.row($(this)
             .parents('tr'))
@@ -404,9 +512,9 @@
       }
     });
 
-    function saveFinancial(dataForm) {
+    function saveInvest(dataForm) {
       return $.ajax({
-        url: `/financial`,
+        url: `/invest`,
         method: 'POST',
         contentType: 'application/json',
         headers: {
@@ -434,9 +542,9 @@
       });
     }
 
-    function updateFinancial(dataForm) {
+    function updateInvest(dataForm) {
       return $.ajax({
-        url: `/financial`,
+        url: `/invest`,
         method: 'PUT',
         contentType: 'application/json',
         headers: {
@@ -464,10 +572,10 @@
       });
     }
 
-    function deleteFinancial(id) {
+    function deleteInvest(id) {
       const _csrf = $('input[name="_csrf"]')[0].value;
       return $.ajax({
-        url: `/financial/delete`,
+        url: `/invest`,
         method: 'DELETE',
         contentType: 'application/json',
         headers: {
@@ -497,9 +605,9 @@
       });
     }
 
-    function getFinancial(id) {
+    function getInvest(id) {
       return $.ajax({
-        url: `/financial/${ id }`,
+        url: `/invest/${ id }`,
         method: 'GET',
         error: function (e) {
           console.log(e);
@@ -534,7 +642,12 @@
         .format('YYYY/MM/DD');
       $('#date')
         .val(dateNow);
-      $('#category-financial')
+      $('#dateTerm')
+        .val(dateNow);
+      $('#category-invest')
+        .val(0)
+        .trigger('change');
+      $('#category-term')
         .val(0)
         .trigger('change');
       $('#payment-method')

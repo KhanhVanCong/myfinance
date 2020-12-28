@@ -30,7 +30,7 @@
         <li class="nav-item <%= path === '/dashboard' ? 'active' : '' %>">
           <a href="/" class="nav-link" onclick="showLoading()">
             <span class="pcoded-micon">
-              <i class="feather icon-settings"></i>
+              <i class="feather icon-activity"></i>
             </span>
             <span class="pcoded-mtext">DashBoard</span>
           </a>
@@ -41,30 +41,20 @@
         <li class="nav-item <%= path === '/financial' ? 'active' : '' %>">
           <a href="/financial" class="nav-link" onclick="showLoading()">
             <span class="pcoded-micon">
-              <i class="feather icon-settings"></i>
+              <i class="feather icon-award"></i>
             </span>
             <span class="pcoded-mtext">Income/Expense/Dept</span>
           </a>
         </li>
-        <li class="nav-item pcoded-menu-caption">
-          <label>Hệ Thống</label>
-        </li>
-        <li class="nav-item">
-          <a href="#" class="nav-link" onclick="showLoading()">
+        <li class="nav-item <%= path === '/invest' ? 'active' : '' %>">
+          <a href="/invest" class="nav-link" onclick="showLoading()">
             <span class="pcoded-micon">
-              <i class="feather icon-settings"></i>
+              <i class="feather icon-sunrise"></i>
             </span>
-            <span class="pcoded-mtext">Quyền truy cập</span>
+            <span class="pcoded-mtext">Invest</span>
           </a>
         </li>
-        <li class="nav-item">
-          <a href="#" class="nav-link" onclick="showLoading()">
-            <span class="pcoded-micon">
-              <i class="feather icon-shield"></i>
-            </span>
-            <span class="pcoded-mtext">Phân Quyền</span>
-          </a>
-        </li>
+
       </ul>
     </div>
   </div>

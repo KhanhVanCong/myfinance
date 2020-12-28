@@ -145,7 +145,7 @@ exports.getListCategory = async (req, res, next) => {
   } catch (err) {
     res.status(500)
       .json({
-        message: 'Deleting product failed.'
+        message: 'Get list categories failed.'
       });
   }
 };

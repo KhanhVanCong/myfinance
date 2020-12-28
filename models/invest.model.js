@@ -14,21 +14,21 @@ const InvestModel = sequelize.define('invest', {
     allowNull: false
   },
   money: {
-    type: Sequelize.DECIMAL,
+    type: Sequelize.DECIMAL(20, 2),
     allowNull: false
   },
   date: {
     type: Sequelize.DATEONLY,
     allowNull: false
   },
-  location: {
+  investIn: {
     type: Sequelize.STRING,
     allowNull: false
   },
   profit: {
     type: Sequelize.STRING,
   },
-  term: {
+  dateTerm: {
     type: Sequelize.DATEONLY,
   },
 });

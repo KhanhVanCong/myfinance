@@ -41,9 +41,11 @@ app.use(sessionMiddleWare);
 const authRoutes = require("./routes/auth.route");
 const homeRoutes = require("./routes/home.route");
 const financialRoutes = require("./routes/finance.route");
+const investRoutes = require("./routes/invest.route");
 app.use(authRoutes);
 app.use(homeRoutes);
 app.use(financialRoutes);
+app.use(investRoutes);
 
 // Handle Errors
 app.use('/500', errorController.get500);
