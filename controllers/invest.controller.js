@@ -29,41 +29,41 @@ exports.getInvest = async (req, res, next) => {
     });
     if (invest) {
       res.status(200)
-        .json({
-          data: invest,
-          message: 'Get invest success!'
-        });
+         .json({
+           data: invest,
+           message: 'Get invest success!'
+         });
     } else {
       res.status(404)
-        .json({
-          message: 'Not found invest!'
-        });
+         .json({
+           message: 'Not found invest!'
+         });
     }
   } catch (err) {
     res.status(500)
-      .json({
-        message: 'Get invest failed.'
-      });
+       .json({
+         message: 'Get invest failed.'
+       });
   }
 };
 
 exports.postInvest = async (req, res, next) => {
   try {
-    // const errors = validationResult(req);
-    // if (!errors.isEmpty()) {
-    //   throw new Error(errors.array()[0].msg);
-    // }
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      throw new Error(errors.array()[0].msg);
+    }
     const {
-      desc,
-      investIn,
-      money,
-      profit,
-      date,
-      categoryInvestId,
-      paymentMethodId,
-      categoryTermId,
-      dateTerm
-    } = req.body;
+            desc,
+            investIn,
+            money,
+            profit,
+            date,
+            categoryInvestId,
+            paymentMethodId,
+            categoryTermId,
+            dateTerm
+          } = req.body;
     const invest = await req.user.createInvest({
       desc, investIn, money, profit, date, categoryInvestId, paymentMethodId, categoryTermId, dateTerm
     });
@@ -91,27 +91,27 @@ exports.postInvest = async (req, res, next) => {
       updatedAt
     };
     res.status(200)
-      .json({
-        data: result,
-        message: 'Create financial success!'
-      });
+       .json({
+         data: result,
+         message: 'Create financial success!'
+       });
   } catch (err) {
     res.status(500)
-      .json({
-        message: 'Create financial failed.'
-      });
+       .json({
+         message: 'Create financial failed.'
+       });
   }
 };
 
 exports.putInvest = async (req, res, next) => {
   try {
-    // const errors = validationResult(req);
-    // if (!errors.isEmpty()) {
-    //   throw new Error(errors.array()[0].msg);
-    // }
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      throw new Error(errors.array()[0].msg);
+    }
     const { id, desc, investIn, money, profit, date, categoryInvestId, paymentMethodId, categoryTermId, dateTerm } = req.body;
     const invest = await Invest.findByPk(id);
-    if(invest) {
+    if (invest) {
       invest.desc = desc;
       invest.investIn = investIn;
       invest.money = money;
@@ -123,20 +123,20 @@ exports.putInvest = async (req, res, next) => {
       invest.dateTerm = dateTerm;
       await invest.save();
       res.status(200)
-        .json({
-          message: 'Update financial success!'
-        });
+         .json({
+           message: 'Update financial success!'
+         });
     } else {
       res.status(404)
-        .json({
-          message: 'Not found invest!'
-        });
+         .json({
+           message: 'Not found invest!'
+         });
     }
   } catch (err) {
     res.status(500)
-      .json({
-        message: 'Update financial failed.'
-      });
+       .json({
+         message: 'Update financial failed.'
+       });
   }
 };
 
@@ -152,20 +152,20 @@ exports.deleteInvest = async (req, res, next) => {
     const result = await invest.destroy();
     if (result) {
       res.status(200)
-        .json({
-          message: 'Delete invest success!'
-        });
+         .json({
+           message: 'Delete invest success!'
+         });
     } else {
       res.status(404)
-        .json({
-          message: 'Not found invest!'
-        });
+         .json({
+           message: 'Not found invest!'
+         });
     }
   } catch (err) {
     res.status(500)
-      .json({
-        message: 'Deleting invest failed.'
-      });
+       .json({
+         message: 'Deleting invest failed.'
+       });
   }
 };
 
@@ -173,15 +173,15 @@ exports.getListCategoryInvest = async (req, res, next) => {
   try {
     const categories = await CategoryInvest.findAll();
     res.status(200)
-      .json({
-        data: categories,
-        message: 'Get list categories success!'
-      });
+       .json({
+         data: categories,
+         message: 'Get list categories success!'
+       });
   } catch (err) {
     res.status(500)
-      .json({
-        message: 'Get list categories failed.'
-      });
+       .json({
+         message: 'Get list categories failed.'
+       });
   }
 };
 
@@ -189,14 +189,14 @@ exports.getListCategoryTerm = async (req, res, next) => {
   try {
     const categories = await CategoryTerm.findAll();
     res.status(200)
-      .json({
-        data: categories,
-        message: 'Get list categories success!'
-      });
+       .json({
+         data: categories,
+         message: 'Get list categories success!'
+       });
   } catch (err) {
     res.status(500)
-      .json({
-        message: 'Get list categories failed.'
-      });
+       .json({
+         message: 'Get list categories failed.'
+       });
   }
 };

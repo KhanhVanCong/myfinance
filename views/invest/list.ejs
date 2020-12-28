@@ -411,7 +411,7 @@
               delete objShowColumn.profit;
               const arrInvest = Object.values(objShowColumn);
               arrInvest[0] = '';
-              arrInvest.push(`<a href="#">
+              arrInvest.push(`<a href="#" class="btn-edit" data-id=${ objShowColumn.id }>
                           <i class="icon feather icon-edit f-w-600 f-16 m-r-15 text-c-blue"></i>
                         </a>
                         <a href="#" class="sweet-warning" data-id=${ objShowColumn.id }>
@@ -434,7 +434,7 @@
 
     });
 
-    $('a.btn-edit').click(async function (e) {
+    $(document).delegate('a.btn-edit', 'click', async function (e) {
       e.preventDefault();
       const modal = $('#modal-report');
       const id = $(this)
@@ -490,7 +490,7 @@
         modal.modal('show');
       }
 
-    })
+    });
 
     $(document).delegate('.sweet-warning', 'click', async function (e) {
       e.preventDefault();
@@ -504,10 +504,7 @@
       if (willDelete) {
         const result = await deleteInvest(id);
         if (result) {
-          tableFinancial.row($(this)
-            .parents('tr'))
-                        .remove()
-                        .draw(false);
+          tableFinancial.row($(this).parents('tr')).remove().draw(false);
         }
       }
     });

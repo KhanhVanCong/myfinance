@@ -324,7 +324,7 @@
               const arrFinancial = Object.values(objFinancial);
               arrFinancial[0] = '';
               arrFinancial[2] = new Intl.NumberFormat().format(arrFinancial[2]);
-              arrFinancial.push(`<a href="#">
+              arrFinancial.push(`<a href="#" class="btn-edit" data-id=${ objFinancial.id }>
                           <i class="icon feather icon-edit f-w-600 f-16 m-r-15 text-c-blue"></i>
                         </a>
                         <a href="#" class="sweet-warning" data-id=${ objFinancial.id }>
@@ -347,7 +347,7 @@
 
     });
 
-    $('a.btn-edit').click(async function (e) {
+    $(document).delegate('a.btn-edit', 'click', async function (e) {
       e.preventDefault();
       const modal = $('#modal-report');
       const id = $(this)
@@ -382,7 +382,7 @@
         modal.modal('show');
       }
 
-    })
+    });
 
     $(document).delegate('.sweet-warning', 'click', async function (e) {
       e.preventDefault();
