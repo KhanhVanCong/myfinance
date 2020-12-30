@@ -1,8 +1,12 @@
 require('dotenv').config();
-const path = require("path");
-const express = require("express");
-const bodyParser = require("body-parser");
+const path = require('path');
+const fs = require('fs');
+const express = require('express');
+const bodyParser = require('body-parser');
 const csrf = require('csurf');
+const helmet = require('helmet');
+const compression = require('compression');
+const morgan = require('morgan');
 
 const errorController = require('./controllers/error.controller');
 const sequelize = require('./util/database');
@@ -12,6 +16,20 @@ const app = express();
 // View engine
 app.set("view engine", "ejs");
 app.set("views", "views");
+
+// Secure header
+app.use(
+  helmet({
+    contentSecurityPolicy: false,
+  })
+);
+
+// Compression file
+app.use(compression());
+
+// Log system
+const accessLogStream = fs.createWriteStream(path.join(__dirname, 'logs/access.log'))
+app.use(morgan('combined', { stream: accessLogStream }));
 
 // Handle Body
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -52,23 +70,24 @@ app.use('/500', errorController.get500);
 app.use(errorController.get404);
 app.use((error, req, res, next) => {
   res.status(error.httpStatusCode)
-    .render("500", {
-      path: "/500",
-      pageTitle: "Error!",
-      error
-    });
+     .render("500", {
+       path: "/500",
+       pageTitle: "Error!",
+       error
+     });
 });
 
 // Relational Database
 require('./util/relation-db');
 
 // Database
-sequelize
-  // .sync({force: true})
-  .sync({alter: true})
-  //.sync()
-  .then(result => {
-    app.listen(process.env.PORT);
-  })
-  .catch(err => console.log(err));
+app.listen(process.env.PORT);
+// sequelize
+//   // .sync({force: true})
+//   .sync({alter: true})
+//   //.sync()
+//   .then(result => {
+//     app.listen(process.env.PORT);
+//   })
+//   .catch(err => console.log(err));
 

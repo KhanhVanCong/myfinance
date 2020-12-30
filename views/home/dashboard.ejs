@@ -26,6 +26,144 @@
     <!-- [ Main Content ] start -->
     <div class="row">
       <!-- [ variant-chart ] start -->
+      <div class="col-4">
+        <div class="card bg-c-green text-white widget-visitor-card">
+          <div class="card-body text-center">
+            <h2 class="text-white"><%= new Intl.NumberFormat().format(totalMoneyAvailable) %></h2>
+            <h5 class="text-white">VND</h5>
+            <h5 class="text-white">Total Money Available</h5>
+            <i class="fas fa-dollar-sign"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-4">
+        <div class="card bg-c-red text-white widget-visitor-card">
+          <div class="card-body text-center">
+            <h2 class="text-white"><%= new Intl.NumberFormat().format(totalMoneyAvailableByBank) %></h2>
+            <h5 class="text-white">VND</h5>
+            <h5 class="text-white">In Bank</h5>
+            <i class="fas fa-warehouse"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-4">
+        <div class="card bg-c-yellow text-white widget-visitor-card">
+          <div class="card-body text-center">
+            <h2 class="text-white"><%= new Intl.NumberFormat().format(totalMoneyAvailableByCash) %></h2>
+            <h5 class="text-white">VND</h5>
+            <h5 class="text-white">Cash</h5>
+            <i class="fas fa-money-bill"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-6">
+        <div class="card">
+          <div class="card-body">
+            <div class="row align-items-center">
+              <div class="col-8">
+                <h4 class="text-c-green"><%= new Intl.NumberFormat().format(totalIncome) %></h4>
+                <h4 class="text-c-green">VND</h4>
+              </div>
+              <div class="col-4 text-right">
+                <i class="fas fa-money-check-alt f-28 text-c-green"></i>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer bg-c-green">
+            <div class="row align-items-center">
+              <div class="col-9">
+                <h6 class="text-white m-b-0">Total Income</h6>
+              </div>
+              <div class="col-3 text-right">
+                <i class="feather icon-trending-up text-white f-16"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-6">
+        <div class="card">
+          <div class="card-body">
+            <div class="row align-items-center">
+              <div class="col-8">
+                <h4 class="text-c-blue"><%= new Intl.NumberFormat().format(totalInvest) %></h4>
+                <h4 class="text-c-blue">VND</h4>
+              </div>
+              <div class="col-4 text-right">
+                <i class="fas fa-donate f-28 text-c-blue"></i>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer bg-c-blue">
+            <div class="row align-items-center">
+              <div class="col-9">
+                <h6 class="text-white m-b-0">Total Invest</h6>
+              </div>
+              <div class="col-3 text-right">
+                <i class="feather icon-trending-up text-white f-16"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-6">
+        <div class="card">
+          <div class="card-body">
+            <div class="row align-items-center">
+              <div class="col-8">
+                <h4 class="text-c-yellow"><%= new Intl.NumberFormat().format(totalExpense) %></h4>
+                <h4 class="text-c-yellow">VND</h4>
+              </div>
+              <div class="col-4 text-right">
+                <i class="fas fa-funnel-dollar f-28 text-c-yellow"></i>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer bg-c-yellow">
+            <div class="row align-items-center">
+              <div class="col-9">
+                <h6 class="text-white m-b-0">Total Expense</h6>
+              </div>
+              <div class="col-3 text-right">
+                <i class="feather icon-trending-up text-white f-16"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-6">
+        <div class="card">
+          <div class="card-body">
+            <div class="row align-items-center">
+              <div class="col-8">
+                <h4 class="text-c-red"><%= new Intl.NumberFormat().format(totalDept) %></h4>
+                <h4 class="text-c-red">VND</h4>
+              </div>
+              <div class="col-4 text-right">
+                <i class="fas fa-file-invoice-dollar f-28 text-c-red"></i>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer bg-c-red">
+            <div class="row align-items-center">
+              <div class="col-9">
+                <h6 class="text-white m-b-0">Total Dept</h6>
+              </div>
+              <div class="col-3 text-right">
+                <i class="feather icon-trending-up text-white f-16"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
       <div class="col-md-12">
         <div class="card">
           <div class="card-header">
