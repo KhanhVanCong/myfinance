@@ -6,7 +6,7 @@ const Invest = require('../models/invest.model');
 
 exports.getListInvest = async (req, res, next) => {
   try {
-    const lstInvest = await Invest.findAll({
+    const lstInvest = await req.user.getInvests({
       include: [ 'category_invest', 'payment_method', 'category_term' ],
     });
     res.render('invest/list', {
@@ -25,6 +25,7 @@ exports.getInvest = async (req, res, next) => {
   try {
     const investID = req.params.id;
     const invest = await Invest.findByPk(investID, {
+      where: { userId: req.user.id },
       include: [ 'category_invest', 'payment_method', 'category_term' ],
     });
     if (invest) {
@@ -110,7 +111,9 @@ exports.putInvest = async (req, res, next) => {
       throw new Error(errors.array()[0].msg);
     }
     const { id, desc, investIn, money, profit, date, categoryInvestId, paymentMethodId, categoryTermId, dateTerm } = req.body;
-    const invest = await Invest.findByPk(id);
+    const invest = await Invest.findByPk(id, {
+      where: { userId: req.user.id }
+    });
     if (invest) {
       invest.desc = desc;
       invest.investIn = investIn;
