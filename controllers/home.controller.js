@@ -1,6 +1,5 @@
 const Finance = require('../models/financial.model');
 const Invest = require('../models/invest.model');
-const { Op } = require("sequelize");
 const sequelize = require('sequelize');
 
 exports.getDashboard = async (req, res, next) => {

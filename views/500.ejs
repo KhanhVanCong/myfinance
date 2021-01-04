@@ -1,10 +1,59 @@
-<%- include('includes/head.ejs') %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Errors</title>
+  <!-- HTML5 Shim and Respond.js IE11 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 11]>
+  <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+  <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+  <!-- Meta -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <meta name="description" content=""/>
+  <meta name="keywords" content="">
+  <meta name="author" content="khanhvc2310@gmail.com - Khanh van"/>
+  <!-- Favicon icon -->
+  <link rel="icon" href="/images/fav.ico" type="image/x-icon">
+  <!-- vendor css -->
+  <link rel="stylesheet" href="/css/style.min.css">
 </head>
-
+<!-- [ offline-ui ] start -->
 <body>
-  <%- include('includes/navigation.ejs') %>
-  <h1>Some errors occurred!</h1>
-  <p>we're working on fixing this, sorry for the inconvenience</p>
-  <p>Detail: <%= error %></p>
-<%- include('includes/end.ejs') %>
+<div class="auth-wrapper maintance">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="text-center">
+          <img src="/images/maintance/maintance.png" alt="Error" class="img-fluid">
+          <h5 class="text-muted my-4">Some errors occurred! We're working on fixing this, sorry for the inconvenience</h5>
+          <p class="text-muted my-4">Detail: <%= error %></p>
+          <a class="btn waves-effect waves-light btn-primary mb-4 text-white" href="/"><i
+                    class="feather icon-refresh-ccw mr-2"></i>Home</a>
+          <a class="btn waves-effect waves-light btn-primary mb-4 text-white logout" href="#"><i
+                    class="feather icon-log-out mr-2"></i>Logout</a>
+          <form method="POST" action="/logout" id="logout-form" class="d-none">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- [ offline-ui ] end -->
+<!-- Required Js -->
+<script src="/js/vendor-all.min.js"></script>
+<script src="/js/plugins/bootstrap.min.js"></script>
+<script>
+  $(document).ready(function () {
+    $('.logout').click(function (e) {
+      e.preventDefault();
+      $('#logout-form').submit();
+    });
+  });
+</script>
+</body>
+</html>
 

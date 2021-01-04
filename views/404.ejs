@@ -1,8 +1,46 @@
-<%- include('includes/head.ejs') %>
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Page Not Found</title>
+  <!-- HTML5 Shim and Respond.js IE11 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 11]>
+  <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+  <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+  <!-- Meta -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <meta name="description" content=""/>
+  <meta name="keywords" content="">
+  <meta name="author" content="khanhvc2310@gmail.com - Khanh van"/>
+  <!-- Favicon icon -->
+  <link rel="icon" href="/images/fav.ico" type="image/x-icon">
+  <!-- vendor css -->
+  <link rel="stylesheet" href="/css/style.min.css">
 </head>
-
 <body>
-    <%- include('includes/navigation.ejs') %>
-    <h1>Page Not Found!</h1>
-<%- include('includes/end.ejs') %>
-
+<!-- [ offline-ui ] start -->
+<div class="auth-wrapper maintance">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="text-center">
+          <img src="/images/maintance/404.png" alt="Not Found" class="img-fluid">
+          <h5 class="text-muted my-4">Page Not Found!</h5>
+          <form action="/">
+            <button class="btn waves-effect waves-light btn-primary mb-4"><i class="feather icon-refresh-ccw mr-2"></i>Home
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- [ offline-ui ] end -->
+<!-- Required Js -->
+<script src="/js/vendor-all.min.js"></script>
+<script src="/js/plugins/bootstrap.min.js"></script>
+</body>
+</html>

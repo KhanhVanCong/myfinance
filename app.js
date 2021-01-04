@@ -81,13 +81,13 @@ app.use((error, req, res, next) => {
 require('./util/relation-db');
 
 // Database
-// app.listen(process.env.PORT);
-sequelize
-  // .sync({force: true})
-  .sync({ alter: true })
-  //.sync()
-  .then(result => {
-    app.listen(process.env.PORT);
-  })
-  .catch(err => console.log(err));
+app.listen(process.env.PORT);
+// sequelize
+//   // .sync({force: true})
+//   .sync({ alter: true })
+//   //.sync()
+//   .then(result => {
+//     app.listen(process.env.PORT);
+//   })
+//   .catch(err => console.log(err));
 
