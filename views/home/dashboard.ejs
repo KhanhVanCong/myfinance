@@ -1,4 +1,5 @@
 <%- include('../includes/head.ejs') %>
+<link rel="stylesheet" href="/css/plugins/PNotifyBrightTheme.css">
 </head>
 
 <body>
@@ -166,10 +167,10 @@
       <div class="col-md-6">
         <div class="card">
           <div class="card-header">
-            <h5>Income In Year</h5>
+            <h5>Incomes In Year</h5>
           </div>
           <div class="card-body">
-            <div id="bar-chart-1"></div>
+            <div id="bar-chart-incomes"></div>
           </div>
         </div>
       </div>
@@ -177,10 +178,10 @@
       <div class="col-md-6">
         <div class="card">
           <div class="card-header">
-            <h5>Bar chart</h5>
+            <h5>Expenses In Year</h5>
           </div>
           <div class="card-body">
-            <div id="bar-chart-2"></div>
+            <div id="bar-chart-expenses"></div>
           </div>
         </div>
       </div>
@@ -188,20 +189,20 @@
       <div class="col-md-6">
         <div class="card">
           <div class="card-header">
-            <h5>Pie Charts</h5>
+            <h5>Invests In Year</h5>
           </div>
           <div class="card-body">
-            <div id="pie-chart-1" style="width:100%"></div>
+            <div id="bar-chart-invests" style="width:100%"></div>
           </div>
         </div>
       </div>
       <div class="col-md-6">
         <div class="card">
           <div class="card-header">
-            <h5>Pie Charts donut</h5>
+            <h5>Depts In Year</h5>
           </div>
           <div class="card-body">
-            <div id="pie-chart-2" style="width:100%"></div>
+            <div id="bar-chart-depts" style="width:100%"></div>
           </div>
         </div>
       </div>
@@ -210,6 +211,9 @@
   </div>
 </div>
 <%- include('../includes/script.ejs') %>
+<script src="/js/plugins/PNotify.js"></script>
+<script src="/js/plugins/PNotifyButtons.js"></script>
 <script src="/js/plugins/apexcharts.min.js"></script>
 <script src="/js/pages/chart-apex.js"></script>
+
 <%- include('../includes/end.ejs') %>

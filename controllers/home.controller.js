@@ -4,50 +4,160 @@ const { Op } = require("sequelize");
 const sequelize = require('sequelize');
 
 exports.getDashboard = async (req, res, next) => {
-  const userId = req.user.id;
-  const [ totalIncome,
-          totalIncomeByCash,
-          totalExpense,
-          totalExpenseByCash,
-          totalDept,
-          totalInvest,
-          totalInvestByCash ] = await Promise.all([
-    getTotalIncome(userId),
-    getTotalIncomeByCash(userId),
-    getTotalExpense(userId),
-    getTotalExpenseByCash(userId),
-    getTotalDept(userId),
-    getTotalInvest(userId),
-    getTotalInvestByCash(userId)
-  ]);
+  try {
+    const userId = req.user.id;
+    const [ totalIncome,
+            totalIncomeByCash,
+            totalExpense,
+            totalExpenseByCash,
+            totalDept,
+            totalInvest,
+            totalInvestByCash ] = await Promise.all([
+      getTotalIncome(userId),
+      getTotalIncomeByCash(userId),
+      getTotalExpense(userId),
+      getTotalExpenseByCash(userId),
+      getTotalDept(userId),
+      getTotalInvest(userId),
+      getTotalInvestByCash(userId)
+    ]);
 
-  const totalMoneyAvailable = totalIncome - totalExpense - totalInvest;
-  const totalMoneyAvailableByCash = totalIncomeByCash - totalExpenseByCash - totalInvestByCash;
-  const totalMoneyAvailableByBank = totalMoneyAvailable - totalMoneyAvailableByCash;
+    const totalMoneyAvailable = totalIncome - totalExpense - totalInvest;
+    const totalMoneyAvailableByCash = totalIncomeByCash - totalExpenseByCash - totalInvestByCash;
+    const totalMoneyAvailableByBank = totalMoneyAvailable - totalMoneyAvailableByCash;
 
-  // Data chart for Income
-  // const incomesInYear = await Finance.findAll({
-  //   attributes: [
-  //     [sequelize.fn('sum', sequelize.col('money')), 'totalMoney'],
-  //   ],
-  //   where: {
-  //     categoryFinancialId: 1
-  //   },
-  //   group: [sequelize.fn('date_trunc', 'year', sequelize.col('date'))]
-  // });
-
-  res.render('home/dashboard', {
-    path: '/dashboard',
-    pageTitle: "Dashboard",
-    totalIncome,
-    totalExpense,
-    totalDept,
-    totalInvest,
-    totalMoneyAvailable,
-    totalMoneyAvailableByCash,
-    totalMoneyAvailableByBank
-  });
+    res.render('home/dashboard', {
+      path: '/dashboard',
+      pageTitle: "Dashboard",
+      totalIncome,
+      totalExpense,
+      totalDept,
+      totalInvest,
+      totalMoneyAvailable,
+      totalMoneyAvailableByCash,
+      totalMoneyAvailableByBank,
+    });
+  } catch (err) {
+    const error = new Error(err);
+    error.httpStatusCode = 500;
+    return next(error);
+  }
 };
+
+exports.getIncomesInYear = async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+    const year = req.params.year;
+    const incomesInYear = await Finance.findAll({
+      attributes: [
+        [ sequelize.fn('month', sequelize.col('date')), 'month' ],
+        [ sequelize.fn('sum', sequelize.col('money')), 'totalMoney' ],
+      ],
+      where: {
+        $and: sequelize.where(sequelize.fn("year", sequelize.col("date")), year),
+        categoryFinancialId: 1,
+        userId
+      },
+      group: 'month'
+    });
+    res.status(200)
+       .json({
+         data: incomesInYear,
+         message: 'Get total incomes success!'
+       });
+  } catch (err) {
+    res.status(500)
+       .json({
+         message: 'Get total incomes failed!'
+       });
+  }
+}
+
+exports.getExpensesInYear = async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+    const year = req.params.year;
+    const expensesInYear = await Finance.findAll({
+      attributes: [
+        [ sequelize.fn('month', sequelize.col('date')), 'month' ],
+        [ sequelize.fn('sum', sequelize.col('money')), 'totalMoney' ],
+      ],
+      where: {
+        $and: sequelize.where(sequelize.fn("year", sequelize.col("date")), year),
+        categoryFinancialId: 2,
+        userId
+      },
+      group: 'month'
+    });
+    res.status(200)
+       .json({
+         data: expensesInYear,
+         message: 'Get total expenses success!'
+       });
+  } catch (err) {
+    res.status(500)
+       .json({
+         message: 'Get total expenses failed!'
+       });
+  }
+}
+
+exports.getInvestsInYear = async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+    const year = req.params.year;
+    const investInYear = await Invest.findAll({
+      attributes: [
+        [ sequelize.fn('month', sequelize.col('date')), 'month' ],
+        [ sequelize.fn('sum', sequelize.col('money')), 'totalMoney' ],
+      ],
+      where: {
+        $and: sequelize.where(sequelize.fn("year", sequelize.col("date")), year),
+        userId
+      },
+      group: 'month'
+    });
+    res.status(200)
+       .json({
+         data: investInYear,
+         message: 'Get total invests success!'
+       });
+  } catch (err) {
+    res.status(500)
+       .json({
+         message: 'Get total invests failed!'
+       });
+  }
+}
+
+exports.getDeptsInYear = async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+    const year = req.params.year;
+    const incomesInYear = await Finance.findAll({
+      attributes: [
+        [ sequelize.fn('month', sequelize.col('date')), 'month' ],
+        [ sequelize.fn('sum', sequelize.col('money')), 'totalMoney' ],
+      ],
+      where: {
+        $and: sequelize.where(sequelize.fn("year", sequelize.col("date")), year),
+        categoryFinancialId: 3,
+        userId
+      },
+      group: 'month'
+    });
+    res.status(200)
+       .json({
+         data: incomesInYear,
+         message: 'Get total depts success!'
+       });
+  } catch (err) {
+    res.status(500)
+       .json({
+         message: 'Get total depts failed!'
+       });
+  }
+}
 
 function getTotalIncome(userId) {
   return Finance.sum('money', {
@@ -107,13 +217,5 @@ function getTotalInvestByCash(userId) {
         userId,
         paymentMethodId: 1
       }
-  })
-}
-
-function getIncomesInYear(userId) {
-  return req.user.getFinancials({
-    where: {
-      categoryFinancialId: 1
-    }
   })
 }
