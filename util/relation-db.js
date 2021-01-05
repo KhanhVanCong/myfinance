@@ -5,6 +5,8 @@ const PaymentMethod = require('../models/payment-method.model');
 const Invest = require('../models/invest.model');
 const CategoryInvest = require('../models/category-invest.model');
 const CategoryTerm = require('../models/category-term.model');
+const Dept = require('../models/dept.model');
+const DeptPaymentHistory = require('../models/dept-payment-history.model');
 
 Financial.belongsTo(User);
 User.hasMany(Financial);
@@ -20,3 +22,9 @@ Invest.belongsTo(CategoryTerm);
 CategoryTerm.hasMany(Invest);
 Invest.belongsTo(PaymentMethod);
 PaymentMethod.hasMany(Invest);
+Dept.belongsTo(User);
+User.hasMany(Dept);
+Dept.belongsTo(PaymentMethod);
+PaymentMethod.hasMany(Dept);
+Dept.belongsTo(DeptPaymentHistory);
+DeptPaymentHistory.hasMany(Dept);

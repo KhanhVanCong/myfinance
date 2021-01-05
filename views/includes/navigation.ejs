@@ -43,7 +43,7 @@
             <span class="pcoded-micon">
               <i class="feather icon-award"></i>
             </span>
-            <span class="pcoded-mtext">Income/Expense/Dept</span>
+            <span class="pcoded-mtext">Income/Expense</span>
           </a>
         </li>
         <li class="nav-item <%= path === '/invest' ? 'active' : '' %>">
@@ -54,7 +54,14 @@
             <span class="pcoded-mtext">Invest</span>
           </a>
         </li>
-
+        <li class="nav-item <%= path === '/dept' ? 'active' : '' %>">
+          <a href="/dept" class="nav-link" onclick="showLoading()">
+            <span class="pcoded-micon">
+              <i class="feather icon-award"></i>
+            </span>
+            <span class="pcoded-mtext">Dept</span>
+          </a>
+        </li>
       </ul>
     </div>
   </div>

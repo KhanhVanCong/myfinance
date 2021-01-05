@@ -11,19 +11,21 @@ exports.getDashboard = async (req, res, next) => {
             totalExpenseByCash,
             totalDept,
             totalInvest,
-            totalInvestByCash ] = await Promise.all([
+            totalInvestByCash,
+            totalMoneyTransfer] = await Promise.all([
       getTotalIncome(userId),
       getTotalIncomeByCash(userId),
       getTotalExpense(userId),
       getTotalExpenseByCash(userId),
       getTotalDept(userId),
       getTotalInvest(userId),
-      getTotalInvestByCash(userId)
+      getTotalInvestByCash(userId),
+      getTotalMoneyTransfer(userId)
     ]);
 
     const totalMoneyAvailable = totalIncome - totalExpense - totalInvest;
     const totalMoneyAvailableByCash = totalIncomeByCash - totalExpenseByCash - totalInvestByCash;
-    const totalMoneyAvailableByBank = totalMoneyAvailable - totalMoneyAvailableByCash;
+    const totalMoneyAvailableByBank = totalMoneyAvailable - totalMoneyAvailableByCash - totalMoneyTransfer;
 
     res.render('home/dashboard', {
       path: '/dashboard',
@@ -217,4 +219,13 @@ function getTotalInvestByCash(userId) {
         paymentMethodId: 1
       }
   })
+}
+
+function getTotalMoneyTransfer(userId) {
+  return Finance.sum('money', {
+    where: {
+      userId,
+      categoryFinancialId: 4
+    }
+  });
 }
