@@ -1,6 +1,7 @@
 const Finance = require('../models/financial.model');
 const Invest = require('../models/invest.model');
 const sequelize = require('sequelize');
+const { Op } = require("sequelize");
 
 exports.getDashboard = async (req, res, next) => {
   try {
@@ -12,7 +13,7 @@ exports.getDashboard = async (req, res, next) => {
             totalDept,
             totalInvest,
             totalInvestByCash,
-            totalMoneyTransfer] = await Promise.all([
+            totalMoneyTransferBankToCash] = await Promise.all([
       getTotalIncome(userId),
       getTotalIncomeByCash(userId),
       getTotalExpense(userId),
@@ -20,12 +21,12 @@ exports.getDashboard = async (req, res, next) => {
       getTotalDept(userId),
       getTotalInvest(userId),
       getTotalInvestByCash(userId),
-      getTotalMoneyTransfer(userId)
+      getTotalMoneyTransferBankToCash(userId)
     ]);
 
-    const totalMoneyAvailable = totalIncome - totalExpense - totalInvest;
+    const totalMoneyAvailable = totalIncome - totalExpense - totalInvest - totalMoneyTransferBankToCash;
     const totalMoneyAvailableByCash = totalIncomeByCash - totalExpenseByCash - totalInvestByCash;
-    const totalMoneyAvailableByBank = totalMoneyAvailable - totalMoneyAvailableByCash - totalMoneyTransfer;
+    const totalMoneyAvailableByBank = totalMoneyAvailable - totalMoneyAvailableByCash;
 
     res.render('home/dashboard', {
       path: '/dashboard',
@@ -221,11 +222,14 @@ function getTotalInvestByCash(userId) {
   })
 }
 
-function getTotalMoneyTransfer(userId) {
+function getTotalMoneyTransferBankToCash(userId) {
   return Finance.sum('money', {
     where: {
       userId,
-      categoryFinancialId: 4
+      categoryFinancialId: 4,
+      [Op.not]: [
+        { paymentMethodId: 1 },
+      ]
     }
   });
 }
