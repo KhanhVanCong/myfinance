@@ -1,5 +1,7 @@
 const Finance = require('../models/financial.model');
 const Invest = require('../models/invest.model');
+const Dept = require('../models/dept.model');
+const DeptPayment = require('../models/dept-payment-history.model');
 const sequelize = require('sequelize');
 const { Op } = require("sequelize");
 
@@ -199,13 +201,20 @@ function getTotalExpenseByCash(userId) {
   })
 }
 
-function getTotalDept(userId) {
-  return Finance.sum('money', {
-    where: {
-      userId,
-      categoryFinancialId: 3
-    }
-  })
+async function getTotalDept(userId) {
+   const [ totalMoneyDept, totalPayment ] = await Promise.all([
+     Dept.sum('money', {
+       where: {
+         userId
+       }
+     }),
+    DeptPayment.sum('money'), {
+       where: {
+         userId
+       }
+     }
+   ]);
+   return totalMoneyDept - totalPayment;
 }
 
 function getTotalInvest(userId) {

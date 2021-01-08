@@ -27,7 +27,7 @@
             </div>
             <ul class="breadcrumb">
               <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
-              <li class="breadcrumb-item"><a href="/invest">Dept</a></li>
+              <li class="breadcrumb-item"><a href="/dept">Dept</a></li>
             </ul>
           </div>
         </div>
@@ -58,7 +58,7 @@
               <table id="single-select" class="table table-hover table-striped table-bordered w-100">
                 <thead>
                 <tr>
-                  <th>STT</th>
+                  <th>#</th>
                   <th>Desc</th>
                   <th>Money (VND)</th>
                   <th>Creditor</th>
@@ -83,14 +83,24 @@
                     <td><%= dept.creditor %></td>
                     <td><%= dept.dateOfBorrow %></td>
                     <td><%= dept.dueDate %></td>
-                    <td><%= dept.isDone %></td>
+
+                    <td>
+                      <% if(dept.isDone) { %>
+                        <span class="badge badge-success">Done</span>
+                      <% } else { %>
+                        <span class="badge badge-danger">Dept</span>
+                      <% } %>
+                    </td>
                     <td><%= dept.payment_method.desc %></td>
                     <td><%= dept.updatedAt.toLocaleString('en-US') %></td>
                     <td>
-                      <a href="#" class="btn-edit" data-id=<%= dept.id %>>
-                        <i class="icon feather icon-edit f-w-600 f-16 m-r-15 text-c-blue"></i>
+                      <a href="#" class="btn-edit" data-id='<%= dept.id %>' title="Edit" >
+                        <i class="icon feather icon-edit f-w-600 f-16 text-c-blue"></i>
                       </a>
-                      <a href="#" class="sweet-warning" data-id=<%= dept.id %>>
+                      <a href="/dept/detail/<%= dept.id %>" class="btn-detail" title="Detail payment">
+                        <i class="feather icon-credit-card f-w-600 f-16 text-c-green"></i>
+                      </a>
+                      <a href="#" class="sweet-warning" data-id='<%= dept.id %>' title="Delete">
                         <i class="feather icon-trash-2 f-w-600 f-16 text-c-red"></i>
                       </a>
                     </td>
@@ -113,7 +123,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">New Dept</h5>
+        <h5 class="modal-title">Dept</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -121,7 +131,6 @@
       <div class="modal-body">
         <form id="form-update" method="post" action>
           <div class="row">
-
             <div class="col-md-6">
               <div class="form-group">
                 <label for="source"><span class="text-danger">*</span> Creditor</label>
@@ -190,7 +199,7 @@
 
             <div class="col-md-6">
               <div class="form-group">
-                <label for="payment-method"><span class="text-danger">*</span> Method </label>
+                <label for="payment-method" class="mb-3"><span class="text-danger">*</span> Method </label>
                 <select class="form-control" id="payment-method" name="paymentMethodId"
                         data-width="100%">
                   <option value="0" selected="selected">Please choose Method</option>
@@ -308,42 +317,38 @@
             dataFormObj[name] = value;
           });
           dataFormObj.money = inpMoney.getNumericString();
-          if (dataFormObj.categoryInvestId == 0) {
-            throw new Error('Please choose Category Invest');
-          }
-          if (dataFormObj.categoryTermId == 0) {
-            throw new Error('Please choose Category Term');
-          }
           if (dataFormObj.paymentMethodId == 0) {
             throw new Error('Please choose Payment Method');
           }
           // Create New
           if (!dataFormObj.id) {
-            const result = await saveInvest(dataFormObj);
+            const result = await saveDept(dataFormObj);
             const objInvest = result.data;
             if (objInvest) {
               resetForm(form);
               const formatMoney = new Intl.NumberFormat().format(objInvest.money);
+              const isDone = objInvest.isDone ? '<span class="badge badge-primary">Done</span>'
+                : '<label class="badge badge-danger">Dept</label>'
               let objShowColumn = {
                 ...objInvest,
-                money: `Amount: ${ formatMoney } </br> Profit: ${ objInvest.profit }`
+                isDone,
+                money: `Amount: ${ formatMoney } </br> Rate: ${ objInvest.lendingRate }`
               };
-              delete objShowColumn.profit;
-              const arrInvest = Object.values(objShowColumn);
-              arrInvest[0] = '';
-              arrInvest.push(`<a href="#" class="btn-edit" data-id=${ objShowColumn.id }>
+              delete objShowColumn.lendingRate;
+              const arrDept = Object.values(objShowColumn);
+              arrDept[0] = '';
+              arrDept.push(`<a href="#" class="btn-edit" data-id=${ objShowColumn.id }>
                           <i class="icon feather icon-edit f-w-600 f-16 m-r-15 text-c-blue"></i>
                         </a>
                         <a href="#" class="sweet-warning" data-id=${ objShowColumn.id }>
                           <i class="feather icon-trash-2 f-w-600 f-16 text-c-red"></i>
                         </a>`);
-              await addRow(arrInvest);
+              await addRow(arrDept);
             }
           } else {
-            await updateInvest(dataFormObj);
+            await updateDept(dataFormObj);
             history.go();
           }
-
         } else {
           throw new Error('Please fill full input (*)');
         }
@@ -359,51 +364,28 @@
       const modal = $('#modal-report');
       const id = $(this)
         .data('id');
-      const result = await getInvest(id);
+      const result = await getDept(id);
       const invest = result.data;
       if (invest) {
-        const {
-                id,
-                desc,
-                investIn,
-                money,
-                profit,
-                date,
-                category_invest,
-                payment_method,
-                category_term,
-                dateTerm
-              } = invest;
+        const { id, creditor, desc, money, dateOfBorrow, lendingRate, dueDate, payment_method } = invest;
         modal.find('[name=id]')
              .val(id);
+        modal.find('[name=creditor]')
+             .val(creditor);
         modal.find('[name=desc]')
              .val(desc);
-        modal.find('[name=investIn]')
-             .val(investIn);
-        modal.find('[name=profit]')
-             .val(profit);
+        modal.find('[name=dateOfBorrow]')
+             .val(dateOfBorrow);
+        modal.find('[name=lendingRate]')
+             .val(lendingRate);
         inpMoney.set(money);
-        modal.find('[name=date]')
-             .val(date);
-        modal.find('[name=dateTerm]')
-             .val(dateTerm);
-        const categoryId = category_invest.id;
-        const categoryOption = new Option(category_invest.desc, categoryId, false, false);
-        $('#category-invest')
-          .append(categoryOption)
-          .val(categoryId)
-          .trigger('change');
+        modal.find('[name=dueDate]')
+             .val(dueDate);
         const methodId = payment_method.id;
         const methodOption = new Option(payment_method.desc, methodId, false, false);
         $('#payment-method')
           .append(methodOption)
           .val(methodId)
-          .trigger('change');
-        const termId = category_term.id;
-        const termOption = new Option(category_term.desc, termId, false, false);
-        $('#category-term')
-          .append(termOption)
-          .val(termId)
           .trigger('change');
         $('#btn-submit')
           .text('Update');
@@ -422,16 +404,16 @@
         dangerMode: true,
       });
       if (willDelete) {
-        const result = await deleteInvest(id);
+        const result = await deleteDept(id);
         if (result) {
           tableFinancial.row($(this).parents('tr')).remove().draw(false);
         }
       }
     });
 
-    function saveInvest(dataForm) {
+    function saveDept(dataForm) {
       return $.ajax({
-        url: `/invest`,
+        url: `/dept`,
         method: 'POST',
         contentType: 'application/json',
         headers: {
@@ -453,15 +435,14 @@
           });
         },
         complete: function (e) {
-          $('#loading-btn')
-            .css('display', 'none');
+          $('#loading-btn').css('display', 'none');
         }
       });
     }
 
-    function updateInvest(dataForm) {
+    function updateDept(dataForm) {
       return $.ajax({
-        url: `/invest`,
+        url: `/dept`,
         method: 'PUT',
         contentType: 'application/json',
         headers: {
@@ -489,10 +470,10 @@
       });
     }
 
-    function deleteInvest(id) {
+    function deleteDept(id) {
       const _csrf = $('input[name="_csrf"]')[0].value;
       return $.ajax({
-        url: `/invest`,
+        url: `/dept`,
         method: 'DELETE',
         contentType: 'application/json',
         headers: {
@@ -522,9 +503,9 @@
       });
     }
 
-    function getInvest(id) {
+    function getDept(id) {
       return $.ajax({
-        url: `/invest/${ id }`,
+        url: `/dept/${ id }`,
         method: 'GET',
         error: function (e) {
           console.log(e);

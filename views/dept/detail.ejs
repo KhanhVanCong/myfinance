@@ -23,11 +23,12 @@
         <div class="row align-items-center">
           <div class="col-md-12">
             <div class="page-header-title">
-              <h5 class="m-b-10">Invest</h5>
+              <h5 class="m-b-10">Dept</h5>
             </div>
             <ul class="breadcrumb">
               <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
-              <li class="breadcrumb-item"><a href="/invest">Invest</a></li>
+              <li class="breadcrumb-item"><a href="/dept">Dept</a></li>
+              <li class="breadcrumb-item"><a href="#">Detail</a></li>
             </ul>
           </div>
         </div>
@@ -37,73 +38,232 @@
     <!-- [ Main Content ] start -->
     <div class="row">
       <!-- HTML5 Export Buttons table start -->
-      <div class="col-sm-12">
+      <div class="col-md-9">
         <div class="card">
           <div class="card-header">
-            <div class="row">
-              <div class="col-sm-3">
-                <h5>List Invest</h5>
-              </div>
-              <div class="col-sm-9 text-right">
-                <button id="create-invest"
-                        class="btn btn-success btn-sm btn-round has-ripple text-white">
-                  <i class="feather icon-plus"></i> New
-                </button>
-              </div>
-            </div>
-
+            <h5 class="mb-2">Dept Information</h5>
+            <p class="text-muted mb-0">More detail dept</p>
           </div>
           <div class="card-body">
-            <div class="dt-responsive table-responsive">
-              <table id="single-select" class="table table-hover table-striped table-bordered w-100">
-                <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Desc</th>
-                  <th>Money (VND)</th>
-                  <th>Date</th>
-                  <th>Invest In</th>
-                  <th>Category Invest</th>
-                  <th>Category Term</th>
-                  <th>Date Term</th>
-                  <th>Payment</th>
-                  <th>Updated At</th>
-                  <th>Handle</th>
-                </tr>
-                </thead>
-                <tbody>
-                <% for ( let invest of lstInvest ) { %>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="source">Creditor</label>
+                  <input type="text"
+                         name="creditor"
+                         id="creditor"
+                         class="form-control"
+                         value=" <%= dept.creditor %>"
+                         disabled>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="date">Date Of Borrow</label>
+                  <input type="text"
+                         name="dateOfBorrow"
+                         id="dateOfBorrow"
+                         class="form-control"
+                         value=" <%= dept.dateOfBorrow %>"
+                         disabled
+                         >
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="money">Money (VND)</label>
+                  <input type="text"
+                         class="form-control"
+                         data-type="currency"
+                         value=" <%= dept.money %>"
+                         disabled>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="source">Lending Rate</label>
+                  <input type="text"
+                         name="lendingRate"
+                         id="lendingRate"
+                         class="form-control"
+                         value=" <%= dept.lendingRate %>"
+                         disabled>
+                </div>
+              </div>
+
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label for="desc">Description</label>
+                  <input type="text"
+                         name="desc"
+                         id="desc"
+                         class="form-control"
+                         value=" <%= dept.desc %>"
+                         disabled>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="source">Due Date</label>
+                  <input type="text"
+                         name="dueDate"
+                         id="dueDate"
+                         class="form-control"
+                         value=" <%= dept.dueDate %>"
+                         disabled>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="payment-method">Method </label>
+                  <input type="text"
+                         name="paymentMethod"
+                         id="paymentMethod"
+                         class="form-control"
+                         value=" <%= dept.payment_method.desc %>"
+                         disabled>
+                </div>
+              </div>
+
+              <input type="hidden" name="dept-id" id="dept-id" value="<%= dept.id %>">
+            </div>
+          </div>
+
+          <div class="card-header">
+            <h5 class="mb-2">Payment History</h5>
+            <div class="row">
+              <div class="col-6">
+                <p class="text-muted mb-0">List payments history for dept</p>
+              </div>
+              <div class="col-6 text-right">
+                <a href="#" class="btn btn-success btn-sm btn-round has-ripple" id="create-payment"><i class="feather icon-plus"></i> Create new</a>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-12 mt-3">
+                <div class="dt-responsive table-responsive">
+                  <table id="single-select" class="table table-hover table-striped table-bordered nowrap">
+                    <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Note</th>
+                      <th>Money</th>
+                      <th>Date</th>
+                      <th>Method</th>
+                      <th>Updated At</th>
+                      <th>Handle</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <% deptsPaymentHistory.forEach(payment => {%>
+                      <tr>
+                        <td></td>
+                        <td><%= payment.note %></td>
+                        <td><%= new Intl.NumberFormat().format(payment.money) %></td>
+                        <td><%= payment.date %></td>
+                        <td><%= payment.payment_method.desc %></td>
+                        <td><%= payment.updatedAt.toLocaleString('en-US') %></td>
+                        <td>
+                          <a href="#" class="btn-edit" data-id='<%= payment.id %>' title="Edit" >
+                            <i class="icon feather icon-edit f-w-600 f-16 text-c-blue m-r-15"></i>
+                          </a>
+                          <a href="#" class="sweet-warning" data-id='<%= payment.id %>' title="Delete">
+                            <i class="feather icon-trash-2 f-w-600 f-16 text-c-red"></i>
+                          </a>
+                        </td>
+                      </tr>
+                    <%})%>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="col-md-3">
+        <div class="card latest-update-card">
+          <div class="card-header">
+            <h5>Status Dept</h5>
+            <div class="card-header-right">
+              <div class="btn-group card-option">
+                <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <i class="feather icon-more-horizontal"></i>
+                </button>
+                <ul class="list-unstyled card-option dropdown-menu dropdown-menu-right">
+                  <li class="dropdown-item minimize-card"><a href="#!"><span><i class="feather icon-minus"></i> Đóng</span><span style="display:none"><i class="feather icon-plus"></i> Mở</span></a></li>
+                  <li class="dropdown-item close-card"><a href="#!"><i class="feather icon-trash"></i> Xóa</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item py-0 px-1">
+              <div class="table-responsive">
+                <table class="table table-borderless mb-0">
+                  <tbody>
                   <tr>
-                    <td></td>
-                    <td><%= invest.desc %></td>
                     <td>
-                      Amount: <%= new Intl.NumberFormat().format(invest.money) %>
-                      <br>
-                      Profit: <%= invest.profit %>
+                      <span class="text-body font-weight-semibold">
+                          Status Now:
+                      </span>
                     </td>
-                    <td><%= invest.date %></td>
-                    <td><%= invest.investIn %></td>
-                    <td><%= invest.category_invest.desc %></td>
-                    <td><%= invest.category_term.desc %></td>
-                    <td><%= invest.dateTerm %></td>
-                    <td><%= invest.payment_method.desc %></td>
-                    <td><%= invest.updatedAt.toLocaleString('en-US') %></td>
-                    <td>
-                      <a href="#" class="btn-edit" data-id=<%= invest.id %>>
-                        <i class="icon feather icon-edit f-w-600 f-16 m-r-15 text-c-blue"></i>
-                      </a>
-                      <a href="#" class="sweet-warning" data-id=<%= invest.id %>>
-                        <i class="feather icon-trash-2 f-w-600 f-16 text-c-red"></i>
-                      </a>
+                    <td class="text-right">
+                      <% if(dept.isDone) {%>
+                        <span class="badge badge-success">Done</span>
+                      <%} else {%>
+                        <span class="badge badge-danger">Dept</span>
+                      <%}%>
                     </td>
                   </tr>
-                <% } %>
+                  </tbody>
+                </table>
+              </div>
+            </li>
+          </ul>
+          <div class="card-body py-2">
+            <div class="table-responsive">
+              <table class="table table-borderless mb-0 w-auto table-sm float-right text-right">
+                <tbody>
+                <tr>
+                  <td>
+                    <h6 class="m-0">Dept Total:</h6>
+                  </td>
+                  <td>
+                    <%= new Intl.NumberFormat().format(dept.money) %> VND
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <h6 class="m-0">Paid Total:</h6>
+                  </td>
+                  <td>
+                    <%= new Intl.NumberFormat().format(totalMoneyPaid) %> VND
+                  </td>
+                </tr>
+                <tr class="border-top">
+                  <td>
+                    <h5 class="m-0">Balance:</h5>
+                  </td>
+                  <td class="font-weight-semibold">
+                    <%= new Intl.NumberFormat().format(dept.money - totalMoneyPaid) %> VND
+                  </td>
+                </tr>
                 </tbody>
               </table>
             </div>
           </div>
         </div>
       </div>
+
     </div>
     <!-- [ Main Content ] end -->
   </div>
@@ -115,7 +275,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">New Financial</h5>
+        <h5 class="modal-title">Payment</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -126,29 +286,7 @@
 
             <div class="col-md-6">
               <div class="form-group">
-                <label for="source"><span class="text-danger">*</span> Invest In</label>
-                <input type="text"
-                       name="investIn"
-                       id="investIn"
-                       class="form-control"
-                       placeholder="Please enter Invest In">
-              </div>
-            </div>
-
-            <div class="col-md-6">
-              <div class="form-group">
-                <label for="date"><span class="text-danger">*</span> Date</label>
-                <input type="text"
-                       name="date"
-                       id="date"
-                       class="form-control datePicker"
-                       placeholder="Please enter date" required>
-              </div>
-            </div>
-
-            <div class="col-md-6">
-              <div class="form-group">
-                <label for="money"><span class="text-danger">*</span> Money (VND)</label>
+                <label for="source"><span class="text-danger">*</span> Money</label>
                 <input type="text"
                        name="money"
                        id="money"
@@ -160,40 +298,29 @@
 
             <div class="col-md-6">
               <div class="form-group">
-                <label for="source"><span class="text-danger">*</span> Profit</label>
+                <label for="date"><span class="text-danger">*</span> Date Of Payment</label>
                 <input type="text"
-                       name="profit"
-                       id="profit"
-                       class="form-control"
-                       placeholder="Please enter profit">
-              </div>
-            </div>
-
-            <div class="col-md-12">
-              <div class="form-group">
-                <label for="desc"><span class="text-danger">*</span> Description</label>
-                <input type="text"
-                       name="desc"
-                       id="desc"
-                       class="form-control"
-                       placeholder="Please enter Description" required>
+                       name="date"
+                       id="date"
+                       class="form-control datePicker"
+                       placeholder="Please enter date of payment" required>
               </div>
             </div>
 
             <div class="col-md-6">
               <div class="form-group">
-                <label for="category-invest"><span class="text-danger">*</span> Category
-                  Invest</label>
-                <select class="form-control" id="category-invest" name="categoryInvestId"
-                        data-width="100%">
-                  <option value="0" selected="selected">Please choose Invest</option>
-                </select>
+                <label for="source"> Note</label>
+                <input type="text"
+                       name="note"
+                       id="note"
+                       class="form-control"
+                       placeholder="Please enter note">
               </div>
             </div>
 
             <div class="col-md-6">
               <div class="form-group">
-                <label for="payment-method"><span class="text-danger">*</span> Method </label>
+                <label for="payment-method" class="mb-3"><span class="text-danger">*</span> Method </label>
                 <select class="form-control" id="payment-method" name="paymentMethodId"
                         data-width="100%">
                   <option value="0" selected="selected">Please choose Method</option>
@@ -201,29 +328,8 @@
               </div>
             </div>
 
-            <div class="col-md-6">
-              <div class="form-group">
-                <label for="category-term" class="mb-3"><span class="text-danger">*</span> Category Term</label>
-                <select class="form-control" id="category-term" name="categoryTermId" data-width="100%">
-                  <option value="0" selected="selected">Please choose Term</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="col-md-6">
-              <div class="form-group">
-                <label for="dateTerm"><span class="text-danger">*</span> Date Term</label>
-                <input type="text"
-                       name="dateTerm"
-                       id="dateTerm"
-                       class="form-control datePicker"
-                       placeholder="Please enter Date Term" required>
-              </div>
-            </div>
-
-
             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-            <input type="hidden" name="id" value="">
+            <input type="hidden" name="paymentId" id="payment-id" value="">
             <div class="col-sm-12 text-right">
               <a href="#" class="btn btn-danger has-ripple text-white" data-dismiss="modal">Cancel</a>
               <button class="btn btn-success" type="submit" id="btn-submit">Create</button>
@@ -265,9 +371,9 @@
           targets: 0
         }, {
           type: 'datetime-moment',
-          target: 9
+          target: 4
         } ],
-        order: [ [ 9, "desc" ] ]
+        order: [ [ 4, "desc" ] ]
       });
 
     setIndexTable(tableFinancial);
@@ -279,62 +385,6 @@
       locale: {
         format: 'YYYY/MM/DD'
       }
-    });
-
-    $('#dateTerm').data('daterangepicker').drops = 'up';
-
-    $('#category-invest').select2({
-      dropdownParent: $('#modal-report'),
-      ajax: {
-        url: `/categoryinvest`,
-        dataType: 'json',
-        delay: 1000,
-        data: function (params) {
-          return {
-            q: params.term, // search term
-          };
-        },
-        processResults: function (res) {
-          let results = [];
-          if (res.data.length > 0) {
-            res.data.forEach(function (i) {
-              results.push({
-                id: i.id,
-                text: i.desc
-              });
-            });
-          }
-          return { results: results }
-        },
-        cache: true
-      },
-    });
-
-    $('#category-term').select2({
-      dropdownParent: $('#modal-report'),
-      ajax: {
-        url: `/categoryterm`,
-        dataType: 'json',
-        delay: 1000,
-        data: function (params) {
-          return {
-            q: params.term, // search term
-          };
-        },
-        processResults: function (res) {
-          let results = [];
-          if (res.data.length > 0) {
-            res.data.forEach(function (i) {
-              results.push({
-                id: i.id,
-                text: i.desc
-              });
-            });
-          }
-          return { results: results }
-        },
-        cache: true
-      },
     });
 
     $('#payment-method').select2({
@@ -366,12 +416,11 @@
 
     const inpMoney = new AutoNumeric('#money', { allowDecimalPadding: false });
 
-    $('#create-invest').click(function (e) {
+    $('#create-payment').click(function (e) {
       e.preventDefault();
       const form = $('#form-update');
       resetForm(form);
-      $('#modal-report')
-        .modal();
+      $('#modal-report').modal();
     })
 
     $('#form-update').submit(async function (e) {
@@ -388,42 +437,35 @@
             dataFormObj[name] = value;
           });
           dataFormObj.money = inpMoney.getNumericString();
-          if (dataFormObj.categoryInvestId == 0) {
-            throw new Error('Please choose Category Invest');
-          }
-          if (dataFormObj.categoryTermId == 0) {
-            throw new Error('Please choose Category Term');
-          }
+          const deptId = $('#dept-id').val();
+          dataFormObj.deptId = deptId;
           if (dataFormObj.paymentMethodId == 0) {
             throw new Error('Please choose Payment Method');
           }
           // Create New
-          if (!dataFormObj.id) {
-            const result = await saveInvest(dataFormObj);
+          if (!dataFormObj.paymentId) {
+            const result = await saveDeptPayment(dataFormObj);
             const objInvest = result.data;
             if (objInvest) {
               resetForm(form);
               const formatMoney = new Intl.NumberFormat().format(objInvest.money);
               let objShowColumn = {
                 ...objInvest,
-                money: `Amount: ${ formatMoney } </br> Profit: ${ objInvest.profit }`
+                money: formatMoney
               };
-              delete objShowColumn.profit;
-              const arrInvest = Object.values(objShowColumn);
-              arrInvest[0] = '';
-              arrInvest.push(`<a href="#" class="btn-edit" data-id=${ objShowColumn.id }>
+              const arrDept = Object.values(objShowColumn);
+              arrDept[0] = '';
+              arrDept.push(`<a href="#" class="btn-edit" data-id=${ objShowColumn.id }>
                           <i class="icon feather icon-edit f-w-600 f-16 m-r-15 text-c-blue"></i>
                         </a>
                         <a href="#" class="sweet-warning" data-id=${ objShowColumn.id }>
                           <i class="feather icon-trash-2 f-w-600 f-16 text-c-red"></i>
                         </a>`);
-              await addRow(arrInvest);
             }
           } else {
-            await updateInvest(dataFormObj);
-            history.go();
+            await updateDeptPayment(dataFormObj);
           }
-
+          history.go();
         } else {
           throw new Error('Please fill full input (*)');
         }
@@ -439,51 +481,24 @@
       const modal = $('#modal-report');
       const id = $(this)
         .data('id');
-      const result = await getInvest(id);
-      const invest = result.data;
-      if (invest) {
-        const {
-                id,
-                desc,
-                investIn,
-                money,
-                profit,
-                date,
-                category_invest,
-                payment_method,
-                category_term,
-                dateTerm
-              } = invest;
+      const result = await getDeptPayment(id);
+      const deptPayment = result.data;
+      if (deptPayment) {
+        const { id, note, money, date, payment_method } = deptPayment;
         modal.find('[name=id]')
              .val(id);
-        modal.find('[name=desc]')
-             .val(desc);
-        modal.find('[name=investIn]')
-             .val(investIn);
-        modal.find('[name=profit]')
-             .val(profit);
-        inpMoney.set(money);
+        modal.find('[name=note]')
+             .val(note);
         modal.find('[name=date]')
              .val(date);
-        modal.find('[name=dateTerm]')
-             .val(dateTerm);
-        const categoryId = category_invest.id;
-        const categoryOption = new Option(category_invest.desc, categoryId, false, false);
-        $('#category-invest')
-          .append(categoryOption)
-          .val(categoryId)
-          .trigger('change');
+        modal.find('[name=paymentId]')
+             .val(id);
+        inpMoney.set(money);
         const methodId = payment_method.id;
         const methodOption = new Option(payment_method.desc, methodId, false, false);
         $('#payment-method')
           .append(methodOption)
           .val(methodId)
-          .trigger('change');
-        const termId = category_term.id;
-        const termOption = new Option(category_term.desc, termId, false, false);
-        $('#category-term')
-          .append(termOption)
-          .val(termId)
           .trigger('change');
         $('#btn-submit')
           .text('Update');
@@ -502,16 +517,16 @@
         dangerMode: true,
       });
       if (willDelete) {
-        const result = await deleteInvest(id);
+        const result = await deleteDeptPayment(id);
         if (result) {
-          tableFinancial.row($(this).parents('tr')).remove().draw(false);
+          history.go();
         }
       }
     });
 
-    function saveInvest(dataForm) {
+    function saveDeptPayment(dataForm) {
       return $.ajax({
-        url: `/invest`,
+        url: `/deptpayment`,
         method: 'POST',
         contentType: 'application/json',
         headers: {
@@ -533,15 +548,14 @@
           });
         },
         complete: function (e) {
-          $('#loading-btn')
-            .css('display', 'none');
+          $('#loading-btn').css('display', 'none');
         }
       });
     }
 
-    function updateInvest(dataForm) {
+    function updateDeptPayment(dataForm) {
       return $.ajax({
-        url: `/invest`,
+        url: `/deptpayment`,
         method: 'PUT',
         contentType: 'application/json',
         headers: {
@@ -569,10 +583,10 @@
       });
     }
 
-    function deleteInvest(id) {
+    function deleteDeptPayment(id) {
       const _csrf = $('input[name="_csrf"]')[0].value;
       return $.ajax({
-        url: `/invest`,
+        url: `/deptpayment`,
         method: 'DELETE',
         contentType: 'application/json',
         headers: {
@@ -602,9 +616,9 @@
       });
     }
 
-    function getInvest(id) {
+    function getDeptPayment(id) {
       return $.ajax({
-        url: `/invest/${ id }`,
+        url: `/deptpayment/${ id }`,
         method: 'GET',
         error: function (e) {
           console.log(e);
@@ -639,18 +653,10 @@
         .format('YYYY/MM/DD');
       $('#date')
         .val(dateNow);
-      $('#dateTerm')
-        .val(dateNow);
-      $('#category-invest')
-        .val(0)
-        .trigger('change');
-      $('#category-term')
-        .val(0)
-        .trigger('change');
       $('#payment-method')
         .val(0)
         .trigger('change');
-      form.find('[name=id]')
+      form.find('[name=paymentId]')
           .val('');
       $('#btn-submit')
         .text('Create');

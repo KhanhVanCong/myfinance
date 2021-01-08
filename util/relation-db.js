@@ -14,6 +14,7 @@ Financial.belongsTo(CategoryFinancial);
 CategoryFinancial.hasMany(Financial);
 Financial.belongsTo(PaymentMethod);
 PaymentMethod.hasMany(Financial);
+
 Invest.belongsTo(User);
 User.hasMany(Invest);
 Invest.belongsTo(CategoryInvest);
@@ -22,9 +23,15 @@ Invest.belongsTo(CategoryTerm);
 CategoryTerm.hasMany(Invest);
 Invest.belongsTo(PaymentMethod);
 PaymentMethod.hasMany(Invest);
+
 Dept.belongsTo(User);
 User.hasMany(Dept);
 Dept.belongsTo(PaymentMethod);
 PaymentMethod.hasMany(Dept);
-Dept.belongsTo(DeptPaymentHistory);
-DeptPaymentHistory.hasMany(Dept);
+
+DeptPaymentHistory.belongsTo(User);
+User.hasMany(DeptPaymentHistory);
+DeptPaymentHistory.belongsTo(Dept);
+Dept.hasMany(DeptPaymentHistory);
+DeptPaymentHistory.belongsTo(PaymentMethod);
+PaymentMethod.hasMany(DeptPaymentHistory);

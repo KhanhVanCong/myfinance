@@ -11,7 +11,7 @@ const DeptPaymentHistoryModel = sequelize.define('dept_payment_history', {
   },
   note: {
     type: Sequelize.STRING,
-    allowNull: false
+    allowNull: true
   },
   money: {
     type: Sequelize.DECIMAL(20, 2),

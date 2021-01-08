@@ -61,11 +61,13 @@ const homeRoutes = require("./routes/home.route");
 const financialRoutes = require("./routes/finance.route");
 const investRoutes = require("./routes/invest.route");
 const deptRoutes = require("./routes/dept.route");
+const deptPaymentRoutes = require("./routes/dept-payment.route");
 app.use(authRoutes);
 app.use(homeRoutes);
 app.use(financialRoutes);
 app.use(investRoutes);
 app.use(deptRoutes);
+app.use(deptPaymentRoutes);
 
 // Handle Errors
 app.use('/500', errorController.get500);
