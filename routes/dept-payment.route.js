@@ -13,9 +13,7 @@ router.post('/deptpayment', isAuth, [
     .isInt(),
   body('note')
     .isString()
-    .trim()
-    .not()
-    .isEmpty(),
+    .trim(),
   body('money')
     .isFloat()
     .not()

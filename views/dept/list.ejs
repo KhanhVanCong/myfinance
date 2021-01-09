@@ -338,7 +338,10 @@
               const arrDept = Object.values(objShowColumn);
               arrDept[0] = '';
               arrDept.push(`<a href="#" class="btn-edit" data-id=${ objShowColumn.id }>
-                          <i class="icon feather icon-edit f-w-600 f-16 m-r-15 text-c-blue"></i>
+                          <i class="icon feather icon-edit f-w-600 f-16 text-c-blue"></i>
+                        </a>
+                        <a href="/dept/detail/${ objShowColumn.id }" class="btn-detail" title="Detail payment">
+                          <i class="feather icon-credit-card f-w-600 f-16 text-c-green"></i>
                         </a>
                         <a href="#" class="sweet-warning" data-id=${ objShowColumn.id }>
                           <i class="feather icon-trash-2 f-w-600 f-16 text-c-red"></i>

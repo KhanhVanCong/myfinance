@@ -32,6 +32,6 @@ PaymentMethod.hasMany(Dept);
 DeptPaymentHistory.belongsTo(User);
 User.hasMany(DeptPaymentHistory);
 DeptPaymentHistory.belongsTo(Dept);
-Dept.hasMany(DeptPaymentHistory);
+Dept.hasMany(DeptPaymentHistory, { onDelete: 'cascade', hooks: true });
 DeptPaymentHistory.belongsTo(PaymentMethod);
 PaymentMethod.hasMany(DeptPaymentHistory);

@@ -138,21 +138,20 @@ exports.getDeptsInYear = async (req, res, next) => {
   try {
     const userId = req.user.id;
     const year = req.params.year;
-    const incomesInYear = await Finance.findAll({
+    const deptsInYear = await Dept.findAll({
       attributes: [
-        [ sequelize.fn('month', sequelize.col('date')), 'month' ],
+        [ sequelize.fn('month', sequelize.col('dateOfBorrow')), 'month' ],
         [ sequelize.fn('sum', sequelize.col('money')), 'totalMoney' ],
       ],
       where: {
-        $and: sequelize.where(sequelize.fn("year", sequelize.col("date")), year),
-        categoryFinancialId: 3,
+        $and: sequelize.where(sequelize.fn("year", sequelize.col("dateOfBorrow")), year),
         userId
       },
       group: 'month'
     });
     res.status(200)
        .json({
-         data: incomesInYear,
+         data: deptsInYear,
          message: 'Get total depts success!'
        });
   } catch (err) {
