@@ -233,6 +233,7 @@ exports.postNewPassword = async (req, res, next) => {
         user.resetToken = null;
         user.resetTokenExpiration = null;
         await user.save();
+        req.flash('successMessage', 'Reset Password Success!')
         res.redirect('/login');
       } else {
         throw new Error('Current Password not match!');
