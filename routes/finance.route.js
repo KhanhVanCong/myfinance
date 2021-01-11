@@ -24,6 +24,12 @@ router.post('/financial', isAuth, [
   body('date')
     .isDate()
     .trim(),
+  body('source')
+    .isString()
+    .trim()
+    .not()
+    .isEmpty()
+    .escape(),
   body('categoryFinancialId')
     .isInt(),
   body('paymentMethodId')
@@ -46,6 +52,12 @@ router.put('/financial', isAuth, [
   body('date')
     .isDate()
     .trim(),
+  body('source')
+    .isString()
+    .trim()
+    .not()
+    .isEmpty()
+    .escape(),
   body('categoryFinancialId')
     .isInt(),
   body('paymentMethodId')
