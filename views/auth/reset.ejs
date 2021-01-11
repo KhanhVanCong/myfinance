@@ -1,21 +1,36 @@
 <%- include('../includes/head.ejs') %>
+<link rel="stylesheet" href="/css/validate.css">
 </head>
 
 <body>
-<%- include('../includes/navigation.ejs') %>
-<main>
-    <% if(errorMessage) { %>
-        <div>
-            <p><%= errorMessage %></p>
+<div class="auth-wrapper">
+  <!-- [ reset-password ] start -->
+  <div class="auth-content">
+    <div class="card">
+      <div class="row align-items-center text-center">
+        <div class="col-md-12">
+          <div class="card-body">
+            <h4 class="mb-3 f-w-400">Reset your password</h4>
+            <% if(errorMessage) { %>
+              <div class="form-group mb-3">
+                <span class="field-validation-error"><%= errorMessage %></span>
+              </div>
+            <% } %>
+            <form action="/reset" method="post">
+              <div class="form-group mb-4">
+                <label class="floating-label" for="Username">Email address</label>
+                <input type="email" class="form-control" id="email" name="email" required>
+              </div>
+              <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+              <button type="submit" class="btn btn-block btn-primary mb-4">Reset password</button>
+            </form>
+            <p class="mb-0 text-muted">Don’t have an account? <a href="/signup" class="f-w-400">Signup</a></p>
+          </div>
         </div>
-    <% } %>
-    <form class="login-form" action="/login" method="POST">
-        <div class="form-control">
-            <label for="email">Email</label>
-            <input type="email" name="email" id="email">
-        </div>
-        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-        <button type="submit">Login</button>
-    </form>
-</main>
+      </div>
+    </div>
+  </div>
+  <!-- [ reset-password ] end -->
+</div>
+<%- include('../includes/script.ejs') %>
 <%- include('../includes/end.ejs') %>

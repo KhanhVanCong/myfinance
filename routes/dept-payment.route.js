@@ -13,7 +13,8 @@ router.post('/deptpayment', isAuth, [
     .isInt(),
   body('note')
     .isString()
-    .trim(),
+    .trim()
+    .escape(),
   body('money')
     .isFloat()
     .not()
@@ -34,7 +35,8 @@ router.put('/deptpayment', isAuth, [
     .isString()
     .trim()
     .not()
-    .isEmpty(),
+    .isEmpty()
+    .escape(),
   body('money')
     .isFloat()
     .not()

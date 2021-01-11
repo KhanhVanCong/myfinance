@@ -19,12 +19,14 @@ router.post('/invest', [
     .isString()
     .trim()
     .not()
-    .isEmpty(),
+    .isEmpty()
+    .escape(),
   body('investIn')
     .isString()
     .trim()
     .not()
-    .isEmpty(),
+    .isEmpty()
+    .escape(),
   body('money')
     .isFloat()
     .not()
@@ -33,7 +35,8 @@ router.post('/invest', [
     .isString()
     .trim()
     .not()
-    .isEmpty(),
+    .isEmpty()
+    .escape(),
   body('date')
     .isDate()
     .trim(),
@@ -55,12 +58,14 @@ router.put('/invest', [
     .isString()
     .trim()
     .not()
-    .isEmpty(),
+    .isEmpty()
+    .escape(),
   body('investIn')
     .isString()
     .trim()
     .not()
-    .isEmpty(),
+    .isEmpty()
+    .escape(),
   body('money')
     .isFloat()
     .not()
@@ -69,7 +74,8 @@ router.put('/invest', [
     .isString()
     .trim()
     .not()
-    .isEmpty(),
+    .isEmpty()
+    .escape(),
   body('date')
     .isDate()
     .trim(),

@@ -15,7 +15,8 @@ router.post('/financial', isAuth, [
     .isString()
     .trim()
     .not()
-    .isEmpty(),
+    .isEmpty()
+    .escape(),
   body('money')
     .isFloat()
     .not()
@@ -36,7 +37,8 @@ router.put('/financial', isAuth, [
     .isString()
     .trim()
     .not()
-    .isEmpty(),
+    .isEmpty()
+    .escape(),
   body('money')
     .isFloat()
     .not()

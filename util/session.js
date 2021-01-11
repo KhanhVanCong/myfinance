@@ -16,9 +16,9 @@ let sessionUtil = session({
   store: sessionStore,
   resave: false,
   saveUninitialized: false,
-  cookie: {
-    //expires: 1000
-  }
+  // cookie: {
+  //   //expires: 1000
+  // }
 });
 
 module.exports = sessionUtil;

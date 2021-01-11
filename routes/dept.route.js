@@ -17,12 +17,14 @@ router.post('/dept', isAuth, [
     .isString()
     .trim()
     .not()
-    .isEmpty(),
+    .isEmpty()
+    .escape(),
   body('desc')
     .isString()
     .trim()
     .not()
-    .isEmpty(),
+    .isEmpty()
+    .escape(),
   body('money')
     .isFloat()
     .not()
@@ -34,7 +36,8 @@ router.post('/dept', isAuth, [
     .isString()
     .trim()
     .not()
-    .isEmpty(),
+    .isEmpty()
+    .escape(),
   body('dueDate')
     .isDate()
     .trim(),
@@ -49,12 +52,14 @@ router.put('/dept', isAuth, [
     .isString()
     .trim()
     .not()
-    .isEmpty(),
+    .isEmpty()
+    .escape(),
   body('desc')
     .isString()
     .trim()
     .not()
-    .isEmpty(),
+    .isEmpty()
+    .escape(),
   body('money')
     .isFloat()
     .not()
@@ -66,7 +71,8 @@ router.put('/dept', isAuth, [
     .isString()
     .trim()
     .not()
-    .isEmpty(),
+    .isEmpty()
+    .escape(),
   body('dueDate')
     .isDate()
     .trim(),

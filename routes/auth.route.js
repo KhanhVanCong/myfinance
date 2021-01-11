@@ -30,17 +30,18 @@ router.post('/signup',
     .withMessage('Please enter a valid email.')
     .custom((email, { req }) => {
       return User.findOne({ where: { email } })
-        .then(userDoc => {
-          if (userDoc) {
-            return Promise.reject('Email exists already, please pick a different one.');
-          }
-        })
+                 .then(userDoc => {
+                   if (userDoc) {
+                     return Promise.reject('Email exists already, please pick a different one.');
+                   }
+                 })
     })
     .normalizeEmail(),
   body('name', 'Please enter a name')
     .trim()
     .not()
-    .isEmpty(),
+    .isEmpty()
+    .escape(),
   body('password', 'Please enter a password with only numbers and text and special character and at least 8 characters.')
     .matches(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$.!%*#?&])[A-Za-z\d@$.!%*#?&]{8,}$/, 'i')
     .trim(),
@@ -56,5 +57,32 @@ router.post('/signup',
 );
 
 router.get('/reset', authController.getReset);
+
+router.post('/reset', [
+  body('email')
+    .isEmail()
+    .withMessage('Please enter a valid email.')
+    .normalizeEmail()
+    .not()
+    .isEmpty() ], authController.postReset);
+
+router.get('/reset/:token', authController.getNewPassword);
+
+router.post('/new-password', [
+  body('currentPassword')
+    .isString()
+    .not()
+    .isEmpty(),
+  body('newPassword', 'Please enter a password with only numbers and text and special character and at least 8 characters.')
+    .matches(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$.!%*#?&])[A-Za-z\d@$.!%*#?&]{8,}$/, 'i')
+    .trim(),
+  body('confirmNewPassword')
+    .trim()
+    .custom((value, { req }) => {
+      if (value !== req.body.newPassword) {
+        throw new Error('Password have to match!');
+      }
+      return true;
+    }) ], authController.postNewPassword);
 
 module.exports = router;

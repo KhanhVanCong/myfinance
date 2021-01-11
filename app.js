@@ -7,6 +7,7 @@ const csrf = require('csurf');
 const helmet = require('helmet');
 const compression = require('compression');
 const morgan = require('morgan');
+const flash = require('connect-flash');
 
 const errorController = require('./controllers/error.controller');
 const sequelize = require('./util/database');
@@ -16,6 +17,7 @@ const app = express();
 // View engine
 app.set("view engine", "ejs");
 app.set("views", "views");
+
 
 // Secure header
 app.use(
@@ -55,6 +57,9 @@ app.use(localVariableMiddleWare);
 const sessionMiddleWare = require('./middleware/session.middleware');
 app.use(sessionMiddleWare);
 
+// Using Flash to send message to other router
+app.use(flash());
+
 // Route
 const authRoutes = require("./routes/auth.route");
 const homeRoutes = require("./routes/home.route");
@@ -83,6 +88,8 @@ app.use((error, req, res, next) => {
 
 // Relational Database
 require('./util/relation-db');
+
+
 
 // Database
 // app.listen(process.env.PORT);
