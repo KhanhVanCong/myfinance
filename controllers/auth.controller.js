@@ -144,7 +144,6 @@ exports.getReset = (req, res, next) => {
 
 exports.postReset = async (req, res, next) => {
   try {
-    const { DOMAIN } = process.env;
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       throw new Error(errors.array()[0].msg);
@@ -159,13 +158,14 @@ exports.postReset = async (req, res, next) => {
       user.resetToken = token;
       user.resetTokenExpiration = Date.now() + 3600000;
       await user.save();
+      const host = req.protocol + '://' + req.get('host');
       await transporter.sendMail({
         to: user.email,
         from: 'pysyren@gmail.com',
         subject: 'Password Reset',
         html: `
             <p>You requested a password reset</p>
-            <p>Click this <a href="${ DOMAIN }/reset/${ token }">link</a> to set a new password.</p>
+            <p>Click this <a href='${ host }/reset/${ token }'>link</a> to set a new password.</p>
           `
       });
       req.flash('successMessage', 'Please check your email to reset password!');
