@@ -44,7 +44,8 @@ exports.postLogin = async (req, res, next) => {
                 pageTitle: 'Login',
                 errorMessage: errors.array()[0].msg,
                 oldInput: { email, password },
-                validationErrors: errors.array()
+                validationErrors: errors.array(),
+                successMessage: null
               })
   }
   try {
@@ -56,7 +57,8 @@ exports.postLogin = async (req, res, next) => {
                   pageTitle: 'Login',
                   errorMessage: 'Invalid email or password.',
                   oldInput: { email, password },
-                  validationErrors: [ { param: 'email', params: 'password' } ]
+                  validationErrors: [ { param: 'email', params: 'password' } ],
+                  successMessage: null
                 })
     } else {
       try {
@@ -73,7 +75,8 @@ exports.postLogin = async (req, res, next) => {
                       pageTitle: 'Login',
                       errorMessage: 'Invalid email or password.',
                       oldInput: { email, password },
-                      validationErrors: [ { param: 'email', params: 'password' } ]
+                      validationErrors: [ { param: 'email', params: 'password' } ],
+                      successMessage: null
                     })
         }
       } catch (err) {
