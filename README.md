@@ -2,10 +2,12 @@
 ![](https://www.financederivative.com/wp-content/uploads/2019/01/image-from-rawpixel-id-497090-jpeg.jpg)
 ## How to setup project to develop.
 - __Clone this project to your PC.__
-- __Run cmd: ```sh$ npm install``` to install packages.__
+- __Run cmd: ```$ npm install``` to install packages.__
 - __This project use Mysql DB and sendgrid for send email so you need to install mysql and register account in SendGrid.__
 - __Create file .evn in root project and setup follow:__
+
 | NAME | VALUE |
+| ---- | ----- |
 | PORT | ------ |
 | DB_USER | ------ |
 | DB_PASSWORD | ------ |
