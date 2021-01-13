@@ -1,5 +1,6 @@
 # Finance Management
 ![](https://www.financederivative.com/wp-content/uploads/2019/01/image-from-rawpixel-id-497090-jpeg.jpg)
+## Link Demo: [Finance Demo](http://finance.khanhvancong.com/)
 ## How to setup project to develop.
 - __Clone this project to your PC.__
 - __Run cmd: ```$ npm install``` to install packages.__
