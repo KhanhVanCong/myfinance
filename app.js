@@ -89,8 +89,6 @@ app.use((error, req, res, next) => {
 // Relational Database
 require('./util/relation-db');
 
-
-
 // Database
 // app.listen(process.env.PORT);
 sequelize
