@@ -2,6 +2,8 @@ const base = require('./webpack.base.conf');
 const webpack = require('webpack');
 const resolve = require('path').resolve;
 const nodeExternals = require('webpack-node-externals');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+
 
 
 
@@ -24,6 +26,7 @@ base.externals = [nodeExternals({
   allowlist: [/bcryptjs/, /body-parser/, /connect-flash/, /dotenv/, /express-session/, /helmet/, /nodemailer/]
 })];
 base.plugins = [
+  new CleanWebpackPlugin(),
   new webpack.ContextReplacementPlugin(
     /express\/lib/,
     resolve(__dirname, '../node_modules'),

@@ -1,6 +1,5 @@
 const resolve = require('path').resolve
 
-
 module.exports = {
   externalsPresets: { node: true },
   node: {
