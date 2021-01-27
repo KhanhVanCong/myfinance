@@ -94,6 +94,21 @@ router.get('/auth/google', passport.authenticate('google', {
 
 router.get('/auth/google/callback',
   passport.authenticate('google', { failureRedirect: '/login' }),
-  authController.loginGoogle);
+  authController.loginThirdParty);
+
+router.get('/auth/facebook', passport.authenticate('facebook', {
+    callbackURL: '/auth/facebook/callback',
+    scope: [ 'email' ]
+  })
+);
+
+router.get('/auth/facebook/callback',
+  function(req,res,next) {
+    const host = 'https' + '://' + req.get('host');
+    passport.authenticate('facebook', {
+      callbackURL: `${host}/auth/facebook/callback`,
+      failureRedirect: '/login' }) (req,res,next);
+  },
+  authController.loginThirdParty);
 
 module.exports = router;

@@ -14,8 +14,7 @@ const UserModel = sequelize.define('user', {
     allowNull: false
   },
   email: {
-    type: Sequelize.STRING,
-    allowNull: false
+    type: Sequelize.STRING
   },
   password: {
     type: Sequelize.STRING,
@@ -27,6 +26,9 @@ const UserModel = sequelize.define('user', {
     type: Sequelize.DATE,
   },
   googleId: {
+    type: Sequelize.STRING,
+  },
+  facebookId: {
     type: Sequelize.STRING,
   }
 });
