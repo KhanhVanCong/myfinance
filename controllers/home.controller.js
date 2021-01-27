@@ -207,11 +207,11 @@ async function getTotalDept(userId) {
          userId
        }
      }),
-    DeptPayment.sum('money'), {
+    DeptPayment.sum('money', {
        where: {
          userId
        }
-     }
+     })
    ]);
    return totalMoneyDept - totalPayment;
 }

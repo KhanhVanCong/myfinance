@@ -252,8 +252,9 @@ exports.postNewPassword = async (req, res, next) => {
   }
 }
 
-exports.loginGoogle = async (req, res, next) => {
+exports.loginThirdParty = async (req, res, next) => {
   try {
+    console.log('go login');
     const userId = req.user.id;
     const user = await User.findByPk(userId);
     if (!user) {
@@ -261,7 +262,7 @@ exports.loginGoogle = async (req, res, next) => {
                 .render('auth/login', {
                   path: '/login',
                   pageTitle: 'Login',
-                  errorMessage: 'Login from google failed !!!.',
+                  errorMessage: 'Login failed !!!.',
                   oldInput: { email : '', password: '' },
                   validationErrors: [ { param: 'email', params: 'password' } ],
                   successMessage: null
