@@ -251,3 +251,30 @@ exports.postNewPassword = async (req, res, next) => {
     return res.redirect(url);
   }
 }
+
+exports.loginGoogle = async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+    const user = await User.findByPk(userId);
+    if (!user) {
+      return res.status(422)
+                .render('auth/login', {
+                  path: '/login',
+                  pageTitle: 'Login',
+                  errorMessage: 'Login from google failed !!!.',
+                  oldInput: { email : '', password: '' },
+                  validationErrors: [ { param: 'email', params: 'password' } ],
+                  successMessage: null
+                })
+    } else {
+      req.session.user = user;
+      req.session.save(err => {
+        res.redirect('/');
+      })
+    }
+  } catch (e) {
+    const error = new Error(err);
+    error.httpStatusCode = 500;
+    return next(error);
+  }
+}

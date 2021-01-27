@@ -1,5 +1,6 @@
 const express = require('express');
 const { check, body } = require('express-validator/check');
+const passport = require('passport');
 
 const authController = require('../controllers/auth.controller');
 const User = require('../models/user.model');
@@ -84,5 +85,15 @@ router.post('/new-password', [
       }
       return true;
     }) ], authController.postNewPassword);
+
+
+router.get('/auth/google', passport.authenticate('google', {
+    scope: [ 'profile', 'email' ]
+  })
+);
+
+router.get('/auth/google/callback',
+  passport.authenticate('google', { failureRedirect: '/login' }),
+  authController.loginGoogle);
 
 module.exports = router;

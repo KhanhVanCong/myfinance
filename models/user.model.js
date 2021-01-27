@@ -19,13 +19,15 @@ const UserModel = sequelize.define('user', {
   },
   password: {
     type: Sequelize.STRING,
-    allowNull: false
   },
   resetToken: {
     type: Sequelize.STRING,
   },
   resetTokenExpiration: {
     type: Sequelize.DATE,
+  },
+  googleId: {
+    type: Sequelize.STRING,
   }
 });
 

@@ -8,6 +8,8 @@ const helmet = require('helmet');
 const compression = require('compression');
 const morgan = require('morgan');
 const flash = require('connect-flash');
+const passport = require('passport');
+
 
 const errorController = require('./controllers/error.controller');
 const sequelize = require('./util/database');
@@ -59,6 +61,10 @@ app.use(sessionMiddleWare);
 
 // Using Flash to send message to other router
 app.use(flash());
+
+// Authentication through 3rd party
+require('./util/passport');
+app.use(passport.initialize());
 
 // Route
 const authRoutes = require("./routes/auth.route");

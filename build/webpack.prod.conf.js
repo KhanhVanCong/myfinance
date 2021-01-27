@@ -22,6 +22,8 @@ base.externals = [nodeExternals({
   // mysql2
   // /nodemailer-sendgrid-transport/
   // /sequelize/
+  // /passport/
+  // /passport-google-oauth20/
 
   allowlist: [/bcryptjs/, /body-parser/, /connect-flash/, /dotenv/, /express-session/, /helmet/, /nodemailer/]
 })];
