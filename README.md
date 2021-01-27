@@ -17,7 +17,10 @@
 | DB_PORT | ------ |
 | SESSION_SECRET_KEY | ------ |
 | SENDGRID_API_KEY | ------ |
-
+| GOOGLE_CLIENT_ID | ------ |
+| GOOGLE_CLIENT_SECRET | ------ |
+| FACEBOOK_APP_ID | ------ |
+| FACEBOOK_APP_SECRET | ------ |
 
 ## Technology:
 - __Nodejs__
@@ -32,6 +35,7 @@
  - __All commits must have short comment to explain issues or features which you are doing__
 ## Main Features Done:
 - __Login__
+- __Login through Google, FaceBook__
 - __Logout__
 - __Reset password with sending email to authentication__
 - __Dashboard__
