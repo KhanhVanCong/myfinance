@@ -64,9 +64,37 @@ exports.getIncomesInYear = async (req, res, next) => {
       },
       group: 'month'
     });
+    const transferInYear = await Finance.findAll({
+      attributes: [
+        [ sequelize.fn('month', sequelize.col('date')), 'month' ],
+        [ sequelize.fn('sum', sequelize.col('money')), 'totalMoney' ],
+      ],
+      where: {
+        $and: sequelize.where(sequelize.fn("year", sequelize.col("date")), year),
+        categoryFinancialId: 3,
+        userId
+      },
+      group: 'month'
+    });
+    let result = [];
+    if(incomesInYear.length > 0 && transferInYear.length > 0) {
+      incomesInYear.forEach(incomeModel => {
+        const income = incomeModel.dataValues;
+        const month = income.month;
+        const transferIndex = transferInYear.findIndex(ts => ts.dataValues.month === month);
+        if(transferIndex !== -1) {
+          const totalMoney = income.totalMoney - transferInYear[transferIndex].dataValues.totalMoney;
+          result.push({month, totalMoney});
+        } else {
+          result.push(income);
+        }
+      })
+    } else {
+      result = incomesInYear;
+    }
     res.status(200)
        .json({
-         data: incomesInYear,
+         data: result,
          message: 'Get total incomes success!'
        });
   } catch (err) {
@@ -234,7 +262,7 @@ function getTotalMoneyTransferBankToCash(userId) {
   return Finance.sum('money', {
     where: {
       userId,
-      categoryFinancialId: 4,
+      categoryFinancialId: 3,
       [Op.not]: [
         { paymentMethodId: 1 },
       ]
